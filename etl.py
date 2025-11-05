@@ -71,13 +71,28 @@ def safe_read_csv(file_path, **kwargs):
         return df
     except Exception as e:
         raise RuntimeError(f"Không thể đọc file dù đã thử mọi cách: {file_path} | Lỗi: {e}")
-    
+
+# Hàm Extract
 def extract_csv(file_path):
     """Extract: Đọc dữ liệu từ một file CSV."""
     return safe_read_csv(file_path)
 
+# Hàm Transform
+def transform_data(df, table_name):
+    # Xử lý duplicate data
+    initial_row_count = len(df)
+    df = df.drop_duplicates().reset_index(drop=True)
+    final_row_count = len(df)
+    duplicates_removed = initial_row_count - final_row_count
+    logger.info(f"Bảng '{table_name}': Đã xử lý và loại bỏ {duplicates_removed} bản ghi trùng lặp.")
+    # Xử lý missing values
+    # Xử lý cho table marketing_data
+    return df
+# Hàm Load
 def run_etl():
+    # Kết nối tới DuckDB
     conn = duckdb.connect(database=DATABASE_PATH)
+    #B1 . Extract dữ liệu từ CSV
     try:
         csv_files = glob.glob(os.path.join(SOURCE_DIR, '*.csv'))
         if not csv_files:
@@ -93,11 +108,14 @@ def run_etl():
 
             print(f"ETLing file {file_path} -> table: {table_name}")
 
+            # B2. Transform dữ liệu
+            df = transform_data(df, table_name)
+
             # Xoá bảng nếu đã tồn tại và overwrite được bật
             if OVERWRITE_TABLES:
                 conn.execute(f"DROP TABLE IF EXISTS {table_name}")
 
-            # Load dữ liệu vào DuckDB
+            # B3. Load dữ liệu vào DuckDB
             try:
                 conn.register('tmp_df', df)
                 conn.execute(f"CREATE TABLE IF NOT EXISTS {table_name} AS SELECT * FROM tmp_df")
