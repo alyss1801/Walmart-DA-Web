@@ -86,8 +86,78 @@ def transform_data(df, table_name):
     duplicates_removed = initial_row_count - final_row_count
     logger.info(f"Bảng '{table_name}': Đã xử lý và loại bỏ {duplicates_removed} bản ghi trùng lặp.")
     # Xử lý missing values
-    # Xử lý cho table marketing_data
+        # Xử lý cho table marketing_data
+        # Xử lý cho table walmart_products
+    if table_name == 'walmart_products':
+        # Giữ các cột cần thiết
+        filter_columns = ['product_id','product_name','brand','final_price','initial_price','discount','review_count','rating','category_name','root_category_name','available_for_delivery', 'available_for_pickup']
+        keep(df, filter_columns)
+        # Chuyển kiểu dữ liệu phân loại
+        category_features = ['brand', 'category_name', 'root_category_name', 'available_for_delivery', 'available_for_pickup']
+        set_category(df, category_features) 
+        # Xử lý discount
+        df['discount'] = df['discount'].str.replace('$', '', regex=False)
+        df['discount'] = df['discount'].astype("float64")
+
+        # Xử lý missing values
+        logger.info("Bắt đầu xử lý missing values cho 'initial_price' và 'discount'...")
+        # Loại bỏ các sản phẩm có giá trị 'initial_price' rỗng thấp hơn 5%
+        columns_to_process = ['initial_price', 'discount']
+        df = drop_low_null_products(df, 'root_category_name', columns_to_process)
+        # Điền các missing values bằng giá trị trung bình của category
+        df = fill_missing_with_category_mean(df, 'root_category_name', columns_to_process)
+
     return df
+
+# Hàm giữ lại các thuộc tính cần thiết
+def keep(df, features):
+    cols_to_drop = [col for col in df.columns if col not in features]
+    df.drop(columns=cols_to_drop, axis=1, inplace=True)
+
+# Hàm set các biến phân loại về kiểu category
+def set_category(df, category_columns):
+    for col in category_columns:
+        if col in df.columns:
+            df[col] = df[col].astype('category')
+
+# Hàm loại bỏ các sản phẩm có giá trị rỗng 5% so với tổng số sản phẩm của catogory đó
+def drop_low_null_products(df, root_category_column, value_columns, threshold=0.05):
+    if root_category_column not in df.columns or not all(col in df.columns for col in value_columns):
+        return df
+    categories_to_check = df[root_category_column].unique()
+
+    indices_to_drop = []
+    for category in categories_to_check:
+        cat_df = df[df[root_category_column] == category]
+        total_count = len(cat_df)
+
+        null_rows_mask = cat_df[value_columns].isna().any(axis=1)
+        null_rows = cat_df[null_rows_mask]
+
+        missing_count = len(null_rows)
+        if missing_count / total_count <= threshold or missing_count == len(cat_df):
+            indices_to_drop.extend(null_rows.index.tolist())
+
+    df.drop(indices_to_drop, inplace=True)
+
+    cols_str = ', '.join(value_columns)
+    logger.info(f"Đã loại bỏ {len(indices_to_drop)} sản phẩm có giá trị rỗng vượt quá {threshold*100}% trong cột '{cols_str}' theo '{root_category_column}'.")
+    return df
+
+# Hàm fill missing values bằng giá trị trung bình của category
+def fill_missing_with_category_mean(df, root_category_column, value_columns):
+    if root_category_column not in df.columns or not all(col in df.columns for col in value_columns):
+        return df
+    
+    categories_to_check = df[root_category_column].unique()
+    for col in value_columns:
+        if df[col].isna().any():
+            category_means = df.groupby(root_category_column, observed=False)[col].transform('mean')
+            df[col] = df[col].fillna(category_means)
+    
+    logger.info(f"Đã điền giá trị missing trong cột '{', '.join(value_columns)}' bằng giá trị trung bình của category tương ứng.")
+    return df
+
 # Hàm Load
 def run_etl():
     # Kết nối tới DuckDB
