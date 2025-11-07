@@ -78,20 +78,20 @@ def transform(df):
     elif "product_id" in df.columns:
         df = df.drop_duplicates(subset=["product_id"], keep="last")
     
-    
     df.reset_index(drop=True, inplace=True) 
+    return df
 
 def count_na(df):
     na_counts = df.isna().sum()
     for col, count in na_counts.items():
         logger.info(f"Column '{col}' has {count} NA values.")
 
-if __name__ == "__main__":
-    file_path = './data/Raw/cleaned_products_API.csv'  # Cập nhật đường dẫn tới file CSV cần kiểm tra
-    df = safe_read_walmart(file_path)
-    logger.info(f"DataFrame loaded with {len(df)} rows and {len(df.columns)} columns.")
-    
-    count_na(df)
-    
-    transform(df)
-    logger.info(f"DataFrame after transformation has {len(df)} rows.")
+if __name__ == '__main__':
+    path = os.path.join('data\\Raw', 'cleaned_products_API.csv')
+    try:
+        df = safe_read_walmart(path)
+        print(df.head())
+        df = transform(df)
+        df.info()
+    except Exception as e:
+        print(f"Error reading '{path}': {e}")

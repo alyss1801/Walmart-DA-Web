@@ -32,7 +32,7 @@ print("="*80)
 print("\n BƯỚC 1: ĐỌC VÀ FIX CẤU TRÚC CSV...")
 
 rows = []
-with open('marketing_data.csv', 'r', encoding='utf-8') as f:
+with open('./data/Raw/marketing_data.csv', 'r', encoding='utf-8') as f:
     reader = csv.reader(f)
     header = next(reader)
     
@@ -408,104 +408,104 @@ df.to_csv(output_file, index=False, encoding='utf-8-sig')
 print(f"✅ Lưu file: {output_file}")
 
 # Tạo schema JSON
-schema = {
-    'filename': output_file,
-    'created_at': datetime.now().isoformat(),
-    'original_rows': 29991,
-    'final_rows': len(df),
-    'original_columns': 28,
-    'final_columns': len(df.columns),
-    'data_retention_rate': f"{len(df)/29991*100:.2f}%",
-    'column_info': {}
-}
+# schema = {
+#     'filename': output_file,
+#     'created_at': datetime.now().isoformat(),
+#     'original_rows': 29991,
+#     'final_rows': len(df),
+#     'original_columns': 28,
+#     'final_columns': len(df.columns),
+#     'data_retention_rate': f"{len(df)/29991*100:.2f}%",
+#     'column_info': {}
+# }
 
-for col in df.columns:
-    col_info = {
-        'dtype': str(df[col].dtype),
-        'null_count': int(df[col].isna().sum()),
-        'null_pct': float(df[col].isna().sum() / len(df) * 100),
-        'unique_count': int(df[col].nunique())
-    }
+# for col in df.columns:
+#     col_info = {
+#         'dtype': str(df[col].dtype),
+#         'null_count': int(df[col].isna().sum()),
+#         'null_pct': float(df[col].isna().sum() / len(df) * 100),
+#         'unique_count': int(df[col].nunique())
+#     }
     
-    # Add sample values
-    if df[col].dtype in ['object', 'category', 'bool']:
-        col_info['sample_values'] = df[col].dropna().head(5).tolist()
-    elif 'datetime' in str(df[col].dtype):
-        col_info['min'] = str(df[col].min()) if pd.notna(df[col].min()) else None
-        col_info['max'] = str(df[col].max()) if pd.notna(df[col].max()) else None
-    else:
-        try:
-            col_info['min'] = float(df[col].min()) if pd.notna(df[col].min()) else None
-            col_info['max'] = float(df[col].max()) if pd.notna(df[col].max()) else None
-            col_info['mean'] = float(df[col].mean()) if pd.notna(df[col].mean()) else None
-        except:
-            col_info['sample_values'] = df[col].dropna().head(5).tolist()
+#     # Add sample values
+#     if df[col].dtype in ['object', 'category', 'bool']:
+#         col_info['sample_values'] = df[col].dropna().head(5).tolist()
+#     elif 'datetime' in str(df[col].dtype):
+#         col_info['min'] = str(df[col].min()) if pd.notna(df[col].min()) else None
+#         col_info['max'] = str(df[col].max()) if pd.notna(df[col].max()) else None
+#     else:
+#         try:
+#             col_info['min'] = float(df[col].min()) if pd.notna(df[col].min()) else None
+#             col_info['max'] = float(df[col].max()) if pd.notna(df[col].max()) else None
+#             col_info['mean'] = float(df[col].mean()) if pd.notna(df[col].mean()) else None
+#         except:
+#             col_info['sample_values'] = df[col].dropna().head(5).tolist()
     
-    schema['column_info'][col] = col_info
+#     schema['column_info'][col] = col_info
 
-with open('marketing_data_schema.json', 'w', encoding='utf-8') as f:
-    json.dump(schema, f, indent=2, ensure_ascii=False)
-print("✅ Lưu schema: marketing_data_schema.json")
+# with open('marketing_data_schema.json', 'w', encoding='utf-8') as f:
+#     json.dump(schema, f, indent=2, ensure_ascii=False)
+# print("✅ Lưu schema: marketing_data_schema.json")
 
 # Tạo báo cáo chi tiết
-report = f"""
-{'='*80}
-BÁO CÁO TIỀN XỬ LÍ DỮ LIỆU MARKETING - PHIÊN BẢN HOÀN CHỈNH
-{'='*80}
-Thời gian: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+# report = f"""
+# {'='*80}
+# BÁO CÁO TIỀN XỬ LÍ DỮ LIỆU MARKETING - PHIÊN BẢN HOÀN CHỈNH
+# {'='*80}
+# Thời gian: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
-📊 TỔNG QUAN:
-   Input:  29,991 dòng × 28 cột
-   Output: {len(df):,} dòng × {len(df.columns)} cột
-   Tỉ lệ giữ lại: {len(df)/29991*100:.2f}%
+# 📊 TỔNG QUAN:
+#    Input:  29,991 dòng × 28 cột
+#    Output: {len(df):,} dòng × {len(df.columns)} cột
+#    Tỉ lệ giữ lại: {len(df)/29991*100:.2f}%
 
-🔧 CÁC BƯỚC ĐÃ THỰC HIỆN:
-   1. ✅ Fix cấu trúc CSV (29 cột data → 28 cột header)
-   2. ✅ Parse numeric columns: Price, Ratings, Reviews
-   3. ✅ Clean text columns: Title, Manufacturer, Model Name...
-   4. ✅ Parse boolean & datetime columns
-   5. ✅ Phân tích missing values
-   6. ✅ Impute missing values:
-      - KNN Imputation (<5% missing)
-      - Iterative/MICE (5-30% missing)
-      - Median (>30% missing)
-   7. ✅ Xử lí outliers với IQR method
-   8. ✅ Feature engineering: {len(features_created)} features mới
-   9. ✅ Drop low-value columns
-   10. ✅ Normalize column names
-   11. ✅ Export CSV + JSON schema
+# 🔧 CÁC BƯỚC ĐÃ THỰC HIỆN:
+#    1. ✅ Fix cấu trúc CSV (29 cột data → 28 cột header)
+#    2. ✅ Parse numeric columns: Price, Ratings, Reviews
+#    3. ✅ Clean text columns: Title, Manufacturer, Model Name...
+#    4. ✅ Parse boolean & datetime columns
+#    5. ✅ Phân tích missing values
+#    6. ✅ Impute missing values:
+#       - KNN Imputation (<5% missing)
+#       - Iterative/MICE (5-30% missing)
+#       - Median (>30% missing)
+#    7. ✅ Xử lí outliers với IQR method
+#    8. ✅ Feature engineering: {len(features_created)} features mới
+#    9. ✅ Drop low-value columns
+#    10. ✅ Normalize column names
+#    11. ✅ Export CSV + JSON schema
 
-📈 CÁC CỘT QUAN TRỌNG:
-"""
+# 📈 CÁC CỘT QUAN TRỌNG:
+# """
 
-important_cols = ['price', 'average_rating', 'num_of_reviews', 
-                  'five_star', 'four_star', 'three_star', 'two_star', 'one_star',
-                  'model_name', 'manufacturer', 'title']
+# important_cols = ['price', 'average_rating', 'num_of_reviews', 
+#                   'five_star', 'four_star', 'three_star', 'two_star', 'one_star',
+#                   'model_name', 'manufacturer', 'title']
 
-for col in important_cols:
-    if col in df.columns:
-        null_pct = df[col].isna().sum() / len(df) * 100
-        unique_count = df[col].nunique()
-        report += f"   - {col}: {df[col].dtype}, {null_pct:.2f}% missing, {unique_count:,} unique values\n"
+# for col in important_cols:
+#     if col in df.columns:
+#         null_pct = df[col].isna().sum() / len(df) * 100
+#         unique_count = df[col].nunique()
+#         report += f"   - {col}: {df[col].dtype}, {null_pct:.2f}% missing, {unique_count:,} unique values\n"
 
-report += f"\n🎨 FEATURES MỚI:\n"
-for feat in features_created:
-    if feat in df.columns:
-        report += f"   - {feat}\n"
+# report += f"\n🎨 FEATURES MỚI:\n"
+# for feat in features_created:
+#     if feat in df.columns:
+#         report += f"   - {feat}\n"
 
-report += f"\n{'='*80}\n"
-report += "✅ TIỀN XỬ LÍ HOÀN TẤT!\n"
-report += f"{'='*80}\n"
+# report += f"\n{'='*80}\n"
+# report += "✅ TIỀN XỬ LÍ HOÀN TẤT!\n"
+# report += f"{'='*80}\n"
 
-with open('data_cleaning_report.txt', 'w', encoding='utf-8') as f:
-    f.write(report)
+# with open('data_cleaning_report.txt', 'w', encoding='utf-8') as f:
+#     f.write(report)
 
-print(report)
+# print(report)
 
-print("\n" + "="*80)
-print("🎉 HOÀN THÀNH TOÀN BỘ QUY TRÌNH!")
+# print("\n" + "="*80)
+# print("🎉 HOÀN THÀNH TOÀN BỘ QUY TRÌNH!")
 print("📁 Files output:")
 print(f"   - {output_file}")
-print("   - marketing_data_schema.json")
-print("   - data_cleaning_report.txt")
-print("="*80)
+# print("   - marketing_data_schema.json")
+# print("   - data_cleaning_report.txt")
+# print("="*80)
