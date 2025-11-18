@@ -96,7 +96,7 @@ def transform_data(df, table_name):
     # Xử lý missing values
 
         # Xử lý cho table cleaned_products_api
-    cols_to_keep = {'title', 'rating', 'reviews', 'seller_name', 'query', 'price_per_unit', 'two_day_shipping', 'free_shipping', 'free_shipping_with_walmart_plus', 'out_of_stock', }
+    cols_to_keep = {'us_item_id', 'product_id', 'title', 'rating', 'reviews', 'seller_id', 'seller_name', 'query', 'price_per_unit', 'two_day_shipping', 'free_shipping', 'free_shipping_with_walmart_plus', 'out_of_stock', 'sponsored', 'muliple_options_available', 'primary_offer', 'fetch_time'}
     if table_name == 'cleaned_products_api':
         if "fetch_time" in df.columns:
             df.sort_values(by="fetch_time", inplace=True)
