@@ -1,0 +1,17 @@
+# Walmart Analytics Dashboard - Requirements
+
+# Core libraries
+streamlit==1.31.0
+pandas==2.2.0
+numpy==1.26.3
+
+# Database
+duckdb==0.10.0
+
+# Visualization
+plotly==5.18.0
+
+# Data export
+openpyxl==3.1.2
+
+# Python version: 3.9+
