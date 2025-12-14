@@ -22,11 +22,13 @@
     - category_key → DIM_CATEGORY
 
 **Dimensions:**
-1. **DIM_PRODUCT** (32,454 products) - Master từ 4 sources
-2. **DIM_CUSTOMER** (50,000 customers) - Demographics
-3. **DIM_DATE** (486 days) - Time dimension for retail
+1. **DIM_PRODUCT** (16 products) - CHỈ từ walmart_customer_purchases
+   - Columns: product_key, product_id, product_name, category_name, rating
+   - NO brand, NO review_count (không có trong source data)
+2. **DIM_CUSTOMER** (50,000 customers) - Demographics từ purchases
+3. **DIM_DATE** (486 days) - Time dimension for retail (2024-2025)
 4. **DIM_PAYMENT** (4 methods) - Payment types
-5. **DIM_CATEGORY** (439 categories) - Product categories
+5. **DIM_CATEGORY** (439 categories) - Product categories từ purchases
 
 ---
 
@@ -91,12 +93,14 @@
 ### Bronze Layer (Raw Data)
 ```
 data/Raw/
-├── Walmart_customer_purchases.csv → Star Schema 1
-├── walmart_products.csv → Star Schema 1
-├── marketing_data.csv → Star Schema 1
-├── cleaned_products_API.csv → Star Schema 1
-├── Temp.csv → Star Schema 2 (Date & Store removed)
-└── tmdt_walmart.csv → Star Schema 3 (Crawl_Timestamp removed)
+├── Walmart_customer_purchases.csv → Star Schema 1 (DUY NHẤT source)
+├── Temp.csv → Star Schema 2
+└── tmdt_walmart.csv → Star Schema 3
+
+REMOVED (không dùng):
+├── walmart_products.csv
+├── marketing_data.csv
+└── cleaned_products_API.csv
 ```
 
 ### Silver Layer (Cleaned)
@@ -108,17 +112,18 @@ pipelines/silver/transforming.py → data/Clean/
 ```
 pipelines/golden/
 ├── standardize_columns.py → data/Golden/standardized/
-│   ├── std_customer_purchases.csv (Star Schema 1)
-│   ├── std_store_performance.csv (Star Schema 2, NO date/store columns)
-│   └── std_ecommerce_sales.csv (Star Schema 3, NO crawl_timestamp)
+│   ├── std_customer_purchases.csv (Star Schema 1 - DUY NHẤT)
+│   ├── std_store_performance.csv (Star Schema 2)
+│   └── std_ecommerce_sales.csv (Star Schema 3)
 │
 ├── build_dims.py → data/Golden/dimensions/
-│   ├── DIM_PRODUCT, DIM_CUSTOMER, DIM_DATE, DIM_PAYMENT, DIM_CATEGORY (Schema 1)
+│   ├── DIM_PRODUCT (16 products: product_name, category_name, rating)
+│   ├── DIM_CUSTOMER, DIM_DATE, DIM_PAYMENT, DIM_CATEGORY (Schema 1)
 │   ├── DIM_STORE, DIM_DATE_STORE, DIM_TEMPERATURE (Schema 2)
 │   └── DIM_ECOMMERCE_PRODUCT, DIM_ECOMMERCE_CATEGORY, DIM_ECOMMERCE_BRAND (Schema 3)
 │
 └── build_facts.py → data/Golden/facts/
-    ├── FACT_SALES (Schema 1)
+    ├── FACT_SALES (Schema 1 - từ customer_purchases)
     ├── FACT_STORE_PERFORMANCE (Schema 2)
     └── FACT_ECOMMERCE_SALES (Schema 3)
 ```
@@ -158,9 +163,11 @@ pipelines/golden/
 ---
 
 ## Summary
-
-✅ **3 Star Schemas hoàn toàn độc lập**  
-✅ **Xóa Date/Store từ Temp.csv** (theo yêu cầu)  
+ - MỖI SCHEMA 1 FILE DUY NHẤT**  
+✅ **Star Schema 1: CHỈ walmart_customer_purchases.csv (16 unique products)**  
+✅ **Star Schema 2: CHỈ Temp.csv (store performance)**  
+✅ **Star Schema 3: CHỈ tmdt_walmart.csv (e-commerce)**  
+✅ **Loại bỏ: API, walmart_products, marketing_data (không liên quan)**
 ✅ **Xóa Crawl_Timestamp từ tmdt_walmart.csv** (theo yêu cầu)  
 ✅ **Không có forced joins giữa data incompatible**  
 ✅ **Mỗi dashboard optimize riêng cho từng business process**  

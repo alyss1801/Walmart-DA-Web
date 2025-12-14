@@ -1,12 +1,16 @@
 """
 Standardize column names and key fields for Golden layer inputs.
 
+SIMPLIFIED: Chỉ dùng walmart_customer_purchases.csv cho FACT_SALES
+(đã đủ: demographics, rating, revenue, payment, product info)
+
 Outputs:
-- data/Golden/standardized/std_api_products.csv
-- data/Golden/standardized/std_marketing_data.csv
-- data/Golden/standardized/std_walmart_products.csv
-- data/Golden/standardized/std_customer_purchases.csv
-- data/Golden/standardized/product_master.csv
+- data/Golden/standardized/std_customer_purchases.csv (Star Schema 1 - ONLY source)
+- data/Golden/standardized/std_store_performance.csv (Star Schema 2)
+- data/Golden/standardized/std_ecommerce_sales.csv (Star Schema 3)
+- data/Golden/standardized/product_master.csv (từ purchases only)
+
+REMOVED: api_products, walmart_products, marketing_data (không cần thiết)
 """
 
 from __future__ import annotations
@@ -61,17 +65,22 @@ class ColumnStandardizer:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        self.api_df: Optional[pd.DataFrame] = None
-        self.marketing_df: Optional[pd.DataFrame] = None
-        self.walmart_df: Optional[pd.DataFrame] = None
-        self.purchases_df: Optional[pd.DataFrame] = None
+        # api_df REMOVED - không cần thiết
+        # marketing_df REMOVED - không link với fact tables
+        # walmart_df REMOVED - không cần thiết
+        self.purchases_df: Optional[pd.DataFrame] = None  # CHỈ DUY NHẤT source
         self.temp_df: Optional[pd.DataFrame] = None
         self.tmdt_walmart_df: Optional[pd.DataFrame] = None
 
     # ------------------------------------------------------------------ #
     # Standardization helpers per dataset
     # ------------------------------------------------------------------ #
-    def standardize_api_products(self) -> Optional[pd.DataFrame]:
+    
+    # REMOVED: standardize_api_products() - không cần thiết cho FACT_SALES
+    # REMOVED: standardize_walmart_products() - không cần thiết cho FACT_SALES
+    # CHỈ GIỮ: standardize_customer_purchases() - đủ data cho Star Schema 1
+    
+    def _standardize_api_products_UNUSED(self) -> Optional[pd.DataFrame]:
         path = self.clean_dir / "cleaned_cleaned_products_API.csv"
         if not path.exists():
             logger.warning("API products file not found: %s", path)
@@ -115,30 +124,12 @@ class ColumnStandardizer:
         logger.info("API products standardized -> %s (%d rows)", output_path, len(df))
         return df
 
-    def standardize_marketing_data(self) -> Optional[pd.DataFrame]:
-        path = self.clean_dir / "cleaned_marketing_data.csv"
-        if not path.exists():
-            logger.warning("Marketing data file not found: %s", path)
-            return None
+    # REMOVED: standardize_marketing_data()
+    # Lý do: File marketing_data không link với FACT_SALES/DIM_PRODUCT
+    # Gây vấn đề cross-filter trong Power BI → Dashboard bị xám/rỗng
+    # File tmdt_walmart.csv đã đủ chi tiết cho e-commerce analysis
 
-        df = pd.read_csv(path)
-        df = df.rename(
-            columns={
-                "title": "product_name",
-                "manufacturer": "brand",
-            }
-        )
-
-        df["product_id"] = build_product_ids(df["product_name"])
-        df["crawl_timestamp"] = pd.to_datetime(df["crawl_timestamp"], errors="coerce")
-        df["source"] = "marketing"
-
-        output_path = self.output_dir / "std_marketing_data.csv"
-        df.to_csv(output_path, index=False)
-        logger.info("Marketing data standardized -> %s (%d rows)", output_path, len(df))
-        return df
-
-    def standardize_walmart_products(self) -> Optional[pd.DataFrame]:
+    def _standardize_walmart_products_UNUSED(self) -> Optional[pd.DataFrame]:
         path = self.clean_dir / "cleaned_walmart_products.csv"
         if not path.exists():
             logger.warning("Walmart products file not found: %s", path)
@@ -312,14 +303,9 @@ class ColumnStandardizer:
             temp = self.purchases_df.rename(columns={"category": "category_name"})
             frames.append(subset(temp, "purchases"))
 
-        if self.walmart_df is not None:
-            frames.append(subset(self.walmart_df, "walmart"))
-
-        if self.api_df is not None:
-            frames.append(subset(self.api_df, "api"))
-
-        if self.marketing_df is not None:
-            frames.append(subset(self.marketing_df, "marketing"))
+        # walmart_df REMOVED - không cần thiết
+        # api_df REMOVED - không cần thiết
+        # marketing_df REMOVED - không liên kết với fact tables
 
         if not frames:
             logger.warning("No product sources found, skipping product_master.csv")
@@ -327,15 +313,21 @@ class ColumnStandardizer:
 
         combined = pd.concat(frames, ignore_index=True)
 
+        # Chỉ aggregate columns có sẵn trong purchases data
         agg_funcs: Dict[str, callable] = {
             "product_name": first_not_null,
-            "brand": first_not_null,
             "category_name": first_not_null,
-            "root_category_name": first_not_null,
             "rating": first_not_null,
-            "review_count": first_not_null,
             "source": lambda s: ",".join(sorted(set(s.dropna()))),
         }
+        # Add optional columns if exist
+        if "brand" in combined.columns:
+            agg_funcs["brand"] = first_not_null
+        if "review_count" in combined.columns:
+            agg_funcs["review_count"] = first_not_null
+        if "root_category_name" in combined.columns:
+            agg_funcs["root_category_name"] = first_not_null
+            
         master = (
             combined.groupby("product_id", dropna=True)
             .agg(agg_funcs)
@@ -353,10 +345,11 @@ class ColumnStandardizer:
         logger.info("COLUMN STANDARDIZATION - GOLDEN LAYER")
         logger.info("=" * 80)
 
-        self.api_df = self.standardize_api_products()
-        self.marketing_df = self.standardize_marketing_data()
-        self.walmart_df = self.standardize_walmart_products()
+        # Star Schema 1: CHỈ dùng customer_purchases (đủ data)
         self.purchases_df = self.standardize_customer_purchases()
+        # api_df REMOVED - không cần
+        # walmart_df REMOVED - không cần
+        # marketing_df REMOVED - không link với fact tables
         
         # Star Schema 2 & 3 data sources
         self.standardize_store_performance()

@@ -76,6 +76,11 @@ class DimensionBuilder:
 
     # ------------------------------------------------------------------ #
     def build_dim_product(self) -> Optional[pd.DataFrame]:
+        """
+        Build DIM_PRODUCT from walmart_customer_purchases ONLY.
+        Columns: product_key, product_id, product_name, category, rating
+        NO brand, NO review_count, NO root_category (không có trong purchases)
+        """
         if self.df_products is None:
             logger.error("product_master.csv is required to build DIM_PRODUCT")
             return None
@@ -83,19 +88,16 @@ class DimensionBuilder:
         dim_product = self.df_products.copy()
         dim_product.insert(0, "product_key", range(1, len(dim_product) + 1))
 
-        # Ensure consistent column order
-        wanted = [
-            "product_key",
-            "product_id",
-            "product_name",
-            "brand",
-            "category_name",
-            "root_category_name",
-            "rating",
-            "review_count",
-            "source",
-        ]
-        dim_product = dim_product.reindex(columns=wanted)
+        # Chỉ giữ columns CÓ THẬT trong walmart_customer_purchases
+        available_cols = ["product_key", "product_id", "product_name"]
+        if "category_name" in dim_product.columns:
+            available_cols.append("category_name")
+        if "rating" in dim_product.columns:
+            available_cols.append("rating")
+        if "source" in dim_product.columns:
+            available_cols.append("source")
+            
+        dim_product = dim_product[available_cols]
 
         output_path = self.output_dir / "DIM_PRODUCT.csv"
         dim_product.to_csv(output_path, index=False)
