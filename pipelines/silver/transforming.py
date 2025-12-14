@@ -358,6 +358,133 @@ def transform_walmart_products(df):
 
     return df
 
+
+def transform_temp(df):
+    """Transform weather and economic data from Temp.csv"""
+    df = df.copy()
+    
+    # Parse date column
+    if 'Date' in df.columns:
+        df['Date'] = pd.to_datetime(df['Date'], format='%d-%m-%Y', errors='coerce')
+        df = df.dropna(subset=['Date'])
+    
+    # Numeric columns to process
+    numeric_columns = [
+        'Weekly_Sales', 'Temperature', 'Fuel_Price', 'CPI', 'Unemployment'
+    ]
+    for col in numeric_columns:
+        if col in df.columns:
+            df[col] = df[col].apply(parse_numeric)
+    
+    # Handle missing values in numeric columns
+    df = process_missing_values(df, numeric_columns)
+    
+    # Handle outliers
+    df = detect_and_handle_outliers(df, numeric_columns)
+    
+    # Feature engineering - Temperature categories
+    if 'Temperature' in df.columns:
+        df['temp_category'] = pd.cut(
+            df['Temperature'],
+            bins=[-float('inf'), 32, 50, 70, 85, float('inf')],
+            labels=['Freezing', 'Cold', 'Mild', 'Warm', 'Hot']
+        )
+    
+    # Holiday flag as boolean
+    if 'Holiday_Flag' in df.columns:
+        df['Holiday_Flag'] = df['Holiday_Flag'].astype(bool)
+    
+    # Store ID
+    if 'Store' in df.columns:
+        df['Store'] = df['Store'].astype(int)
+    
+    df = normalize_column_names(df)
+    df.reset_index(drop=True, inplace=True)
+    
+    return df
+
+
+def transform_tmdt_walmart(df):
+    """Transform e-commerce transaction data from tmdt_walmart.csv"""
+    df = df.copy()
+    
+    # Parse timestamp
+    if 'Crawl Timestamp' in df.columns:
+        df['Crawl Timestamp'] = pd.to_datetime(df['Crawl Timestamp'], format='%Y-%m-%d %H:%M:%S %z', errors='coerce')
+        df['crawl_year'] = df['Crawl Timestamp'].dt.year
+        df['crawl_month'] = df['Crawl Timestamp'].dt.month
+        df['crawl_day'] = df['Crawl Timestamp'].dt.day
+        df['crawl_dayofweek'] = df['Crawl Timestamp'].dt.dayofweek
+    
+    # Numeric price columns
+    price_columns = ['List Price', 'Sale Price']
+    for col in price_columns:
+        if col in df.columns:
+            df[col] = df[col].apply(parse_numeric)
+    
+    # Text columns
+    text_columns = ['Product Name', 'Brand', 'Description', 'Category']
+    for col in text_columns:
+        if col in df.columns:
+            df[col] = df[col].apply(clean_text)
+    
+    # Boolean Available column
+    if 'Available' in df.columns:
+        bool_map = {
+            'TRUE': True, 'FALSE': False, 'true': True, 'false': False,
+            True: True, False: False, '1': True, '0': False
+        }
+        df['Available'] = df['Available'].map(bool_map).fillna(False).infer_objects(copy=False).astype(bool)
+    
+    # Handle missing prices
+    df = process_missing_values(df, price_columns)
+    
+    # Calculate discount percentage
+    if 'List Price' in df.columns and 'Sale Price' in df.columns:
+        df['discount_percentage'] = ((df['List Price'] - df['Sale Price']) / df['List Price'] * 100).fillna(0)
+        df['has_discount'] = (df['discount_percentage'] > 0).astype(int)
+    
+    # Handle outliers
+    df = detect_and_handle_outliers(df, price_columns)
+    
+    # Extract category hierarchy
+    if 'Category' in df.columns:
+        # Category format: "Food | Beverages | Tea | All Tea"
+        df['category_split'] = df['Category'].str.split('|')
+        df['root_category'] = df['category_split'].apply(lambda x: x[0].strip() if isinstance(x, list) and len(x) > 0 else 'Unknown')
+        df['sub_category'] = df['category_split'].apply(lambda x: x[1].strip() if isinstance(x, list) and len(x) > 1 else 'Unknown')
+        df = df.drop('category_split', axis=1)
+    
+    df = drop_low_value_columns(df)
+    df = normalize_column_names(df)
+    df.reset_index(drop=True, inplace=True)
+    
+    return df
+    
+    # Handle outliers
+    df = detect_and_handle_outliers(df, numeric_columns)
+    
+    # Feature engineering - Temperature categories
+    if 'Temperature' in df.columns:
+        df['temp_category'] = pd.cut(
+            df['Temperature'],
+            bins=[-float('inf'), 32, 50, 70, 85, float('inf')],
+            labels=['Freezing', 'Cold', 'Mild', 'Warm', 'Hot']
+        )
+    
+    # Holiday flag as boolean
+    if 'Holiday_Flag' in df.columns:
+        df['Holiday_Flag'] = df['Holiday_Flag'].astype(bool)
+    
+    # Store ID
+    if 'Store' in df.columns:
+        df['Store'] = df['Store'].astype(int)
+    
+    df = normalize_column_names(df)
+    df.reset_index(drop=True, inplace=True)
+    
+    return df
+
 # -----------------------------------------------------------------------------
 # === TRANSFORM MAP (exactly as requested) ===
 # -----------------------------------------------------------------------------
@@ -367,6 +494,8 @@ TRANSFORM_MAP = {
     'marketing_data': transform_marketing_data,
     'walmart_customers_purchases': transform_walmart_customers_purchases,
     'walmart_products': transform_walmart_products,
+    'temp': transform_temp,
+    'tmdt_walmart': transform_tmdt_walmart,
 }
 
 # -----------------------------------------------------------------------------

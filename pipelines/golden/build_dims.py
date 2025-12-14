@@ -1,12 +1,14 @@
 """
-Build dimension tables for the Golden layer star schema.
+Build dimension tables for 3 independent Star Schemas.
 
-Dimensions produced:
-- DIM_PRODUCT
-- DIM_CUSTOMER
-- DIM_DATE
-- DIM_PAYMENT
-- DIM_CATEGORY
+Star Schema 1 (Retail Sales 2024-2025):
+- DIM_PRODUCT, DIM_CUSTOMER, DIM_DATE_RETAIL, DIM_PAYMENT, DIM_CATEGORY
+
+Star Schema 2 (Store Performance 2010-2012):
+- DIM_STORE, DIM_DATE_STORE, DIM_TEMPERATURE
+
+Star Schema 3 (E-commerce 2019):
+- DIM_ECOMMERCE_PRODUCT, DIM_ECOMMERCE_CATEGORY, DIM_ECOMMERCE_BRAND
 """
 
 from __future__ import annotations
@@ -36,6 +38,8 @@ class DimensionBuilder:
         self.df_products: Optional[pd.DataFrame] = None
         self.df_purchases: Optional[pd.DataFrame] = None
         self.df_walmart: Optional[pd.DataFrame] = None
+        self.df_store_performance: Optional[pd.DataFrame] = None
+        self.df_ecommerce_sales: Optional[pd.DataFrame] = None
         self._load_sources()
 
     def _load_sources(self) -> None:
@@ -57,6 +61,18 @@ class DimensionBuilder:
             logger.info("Loaded std_walmart_products.csv (%d rows)", len(self.df_walmart))
         except Exception as exc:
             logger.warning("Could not load std_walmart_products.csv: %s", exc)
+
+        try:
+            self.df_store_performance = pd.read_csv(self.std_dir / "std_store_performance.csv")
+            logger.info("Loaded std_store_performance.csv (%d rows)", len(self.df_store_performance))
+        except Exception as exc:
+            logger.warning("Could not load std_store_performance.csv: %s", exc)
+
+        try:
+            self.df_ecommerce_sales = pd.read_csv(self.std_dir / "std_ecommerce_sales.csv")
+            logger.info("Loaded std_ecommerce_sales.csv (%d rows)", len(self.df_ecommerce_sales))
+        except Exception as exc:
+            logger.warning("Could not load std_ecommerce_sales.csv: %s", exc)
 
     # ------------------------------------------------------------------ #
     def build_dim_product(self) -> Optional[pd.DataFrame]:
@@ -163,6 +179,7 @@ class DimensionBuilder:
         return dim_payment
 
     def build_dim_category(self) -> Optional[pd.DataFrame]:
+        """DIM_CATEGORY for Star Schema 1 (Retail Sales)"""
         frames = []
 
         if self.df_walmart is not None:
@@ -191,21 +208,169 @@ class DimensionBuilder:
         logger.info("DIM_CATEGORY built -> %s (%d rows)", output_path, len(dim_category))
         return dim_category
 
+    # ===================================================================
+    # STAR SCHEMA 2: Store Performance Dimensions (2010-2012)
+    # ===================================================================
+    
+    def build_dim_store(self) -> Optional[pd.DataFrame]:
+        """DIM_STORE for Star Schema 2 (Store Performance)"""
+        if self.df_store_performance is None:
+            logger.warning("No store performance data found, skipping DIM_STORE")
+            return None
+        
+        stores = self.df_store_performance[["store_id"]].drop_duplicates().copy()
+        stores = stores.sort_values("store_id").reset_index(drop=True)
+        stores.insert(0, "store_key", range(1, len(stores) + 1))
+        stores["store_name"] = "Store " + stores["store_id"].astype(str)
+        stores["region"] = "USA"
+        
+        output_path = self.output_dir / "DIM_STORE.csv"
+        stores.to_csv(output_path, index=False)
+        logger.info("DIM_STORE built -> %s (%d stores)", output_path, len(stores))
+        return stores
+    
+    def build_dim_date_store(self) -> Optional[pd.DataFrame]:
+        """DIM_DATE_STORE for Star Schema 2 (Store Performance 2010-2012)"""
+        if self.df_store_performance is None:
+            logger.warning("No store performance data, skipping DIM_DATE_STORE")
+            return None
+        
+        dates = pd.to_datetime(self.df_store_performance["sale_date"], errors="coerce").dropna()
+        if dates.empty:
+            logger.warning("No valid dates found in store performance data")
+            return None
+        
+        start_date = dates.min().date()
+        end_date = dates.max().date()
+        start_date = datetime.combine(start_date, datetime.min.time())
+        end_date = datetime.combine(end_date, datetime.min.time())
+        
+        dates = pd.date_range(start=start_date, end=end_date, freq="D")
+        dim_date = pd.DataFrame({
+            "date_key": dates.strftime("%Y%m%d").astype(int),
+            "full_date": dates.date,
+            "day": dates.day,
+            "day_name": dates.strftime("%A"),
+            "day_of_week": dates.dayofweek + 1,
+            "is_weekend": (dates.dayofweek >= 5).astype(int),
+            "month": dates.month,
+            "month_name": dates.strftime("%B"),
+            "quarter": dates.quarter,
+            "week_of_year": dates.isocalendar().week.astype(int),
+            "year": dates.year,
+        })
+        
+        output_path = self.output_dir / "DIM_DATE_STORE.csv"
+        dim_date.to_csv(output_path, index=False)
+        logger.info("DIM_DATE_STORE built -> %s (%d days, %s to %s)", 
+                   output_path, len(dim_date), start_date.date(), end_date.date())
+        return dim_date
+    
+    def build_dim_temperature(self) -> pd.DataFrame:
+        """DIM_TEMPERATURE for Star Schema 2 (Temperature categories)"""
+        dim_temp = pd.DataFrame({
+            "temp_category_key": [1, 2, 3, 4, 5],
+            "temp_category": ["Freezing", "Cold", "Cool", "Warm", "Hot"],
+            "temp_range_min": [-999, 32, 50, 70, 85],
+            "temp_range_max": [32, 50, 70, 85, 999],
+            "description": [
+                "Below 32°F - Freezing conditions",
+                "32-50°F - Cold weather",
+                "50-70°F - Cool/Comfortable",
+                "70-85°F - Warm weather",
+                "Above 85°F - Hot conditions"
+            ]
+        })
+        
+        output_path = self.output_dir / "DIM_TEMPERATURE.csv"
+        dim_temp.to_csv(output_path, index=False)
+        logger.info("DIM_TEMPERATURE built -> %s (5 categories)", output_path)
+        return dim_temp
+
+    # ===================================================================
+    # STAR SCHEMA 3: E-commerce Dimensions (2019)
+    # ===================================================================
+    
+    def build_dim_ecommerce_product(self) -> Optional[pd.DataFrame]:
+        """DIM_ECOMMERCE_PRODUCT for Star Schema 3 (E-commerce)"""
+        if self.df_ecommerce_sales is None:
+            logger.warning("No e-commerce data found, skipping DIM_ECOMMERCE_PRODUCT")
+            return None
+        
+        # Select columns that actually exist in the data
+        available_cols = self.df_ecommerce_sales.columns.tolist()
+        cols_to_select = []
+        
+        # Check which columns exist and add them
+        for col in ["product_id", "product_name", "brand", "root_category", "sub_category"]:
+            if col in available_cols:
+                cols_to_select.append(col)
+        
+        dim = self.df_ecommerce_sales[cols_to_select].drop_duplicates().copy()
+        dim.insert(0, "ecommerce_product_key", range(1, len(dim) + 1))
+        
+        output_path = self.output_dir / "DIM_ECOMMERCE_PRODUCT.csv"
+        dim.to_csv(output_path, index=False)
+        logger.info("DIM_ECOMMERCE_PRODUCT built -> %s (%d products)", output_path, len(dim))
+        return dim
+    
+    def build_dim_ecommerce_category(self) -> Optional[pd.DataFrame]:
+        """DIM_ECOMMERCE_CATEGORY for Star Schema 3"""
+        if self.df_ecommerce_sales is None:
+            logger.warning("No e-commerce data, skipping DIM_ECOMMERCE_CATEGORY")
+            return None
+        
+        dim = self.df_ecommerce_sales[[
+            "root_category", "sub_category"
+        ]].drop_duplicates().copy()
+        dim.insert(0, "ecommerce_category_key", range(1, len(dim) + 1))
+        
+        output_path = self.output_dir / "DIM_ECOMMERCE_CATEGORY.csv"
+        dim.to_csv(output_path, index=False)
+        logger.info("DIM_ECOMMERCE_CATEGORY built -> %s (%d categories)", output_path, len(dim))
+        return dim
+    
+    def build_dim_ecommerce_brand(self) -> Optional[pd.DataFrame]:
+        """DIM_ECOMMERCE_BRAND for Star Schema 3"""
+        if self.df_ecommerce_sales is None:
+            logger.warning("No e-commerce data, skipping DIM_ECOMMERCE_BRAND")
+            return None
+        
+        brands = self.df_ecommerce_sales[["brand"]].drop_duplicates().dropna()
+        brands = brands.sort_values("brand").reset_index(drop=True)
+        brands.insert(0, "brand_key", range(1, len(brands) + 1))
+        
+        output_path = self.output_dir / "DIM_ECOMMERCE_BRAND.csv"
+        brands.to_csv(output_path, index=False)
+        logger.info("DIM_ECOMMERCE_BRAND built -> %s (%d brands)", output_path, len(brands))
+        return brands
+
     def build_all(self) -> Dict[str, Optional[pd.DataFrame]]:
         logger.info("=" * 80)
-        logger.info("BUILDING DIMENSIONS")
+        logger.info("BUILDING DIMENSIONS FOR 3 STAR SCHEMAS")
         logger.info("=" * 80)
 
         dims: Dict[str, Optional[pd.DataFrame]] = {
+            # Star Schema 1: Retail Sales (2024-2025)
             "product": self.build_dim_product(),
             "customer": self.build_dim_customer(),
             "date": self.build_dim_date(),
             "payment": self.build_dim_payment(),
             "category": self.build_dim_category(),
+            
+            # Star Schema 2: Store Performance (2010-2012)
+            "store": self.build_dim_store(),
+            "date_store": self.build_dim_date_store(),
+            "temperature": self.build_dim_temperature(),
+            
+            # Star Schema 3: E-commerce (2019)
+            "ecommerce_product": self.build_dim_ecommerce_product(),
+            "ecommerce_category": self.build_dim_ecommerce_category(),
+            "ecommerce_brand": self.build_dim_ecommerce_brand(),
         }
 
         logger.info("=" * 80)
-        logger.info("DIMENSIONS COMPLETE")
+        logger.info("DIMENSIONS COMPLETE FOR ALL 3 STAR SCHEMAS")
         logger.info("=" * 80)
         return dims
 

@@ -21,9 +21,11 @@ from loading import load_to_duckdb
 # Configuration
 # -----------------------------------------------------------------------------
 
-SOURCE_DIR = '../data/Raw'
-CLEAN_DIR = '../data/Clean'
-DATABASE_PATH = '../staging/staging.db'
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parents[2]
+SOURCE_DIR = BASE_DIR / 'data' / 'Raw'
+CLEAN_DIR = BASE_DIR / 'data' / 'Clean'
+DATABASE_PATH = BASE_DIR / 'staging' / 'staging.db'
 OVERWRITE_TABLES = False
 
 # Mapping table → primary key for upsert
@@ -31,7 +33,9 @@ DEFAULT_PRIMARY_KEYS = {
     'cleaned_products_api': 'us_item_id',
     'marketing_data': None,      # No key → append mode
     'walmart_customers_purchases': None,
-    'walmart_products': 'product_id'
+    'walmart_products': 'product_id',
+    'temp': None,                # Weather/economic data → append mode
+    'tmdt_walmart': None,        # E-commerce transactions → append mode
 }
 
 # Logging
@@ -46,8 +50,8 @@ logger = logging.getLogger(__name__)
 # -----------------------------------------------------------------------------
 
 def save_cleaned_data(df, original_filename):
-    os.makedirs(CLEAN_DIR, exist_ok=True)
-    clean_path = os.path.join(CLEAN_DIR, f"cleaned_{original_filename}")
+    CLEAN_DIR.mkdir(parents=True, exist_ok=True)
+    clean_path = CLEAN_DIR / f"cleaned_{original_filename}"
     try:
         df.to_csv(clean_path, index=False, encoding='utf-8')
         logger.info(f"[SAVE] Cleaned file saved: {clean_path}")
@@ -65,12 +69,15 @@ def run_etl(source_dir=SOURCE_DIR):
         'errors': []
     }
 
-    csv_files = glob.glob(os.path.join(source_dir, '*.csv'))
+    csv_files = list(Path(source_dir).glob('*.csv'))
     if not csv_files:
         logger.warning('[RUN] No CSV files found in source directory.')
         return results
 
-    with duckdb.connect(database=DATABASE_PATH) as conn:
+    # Create staging directory if not exists
+    DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    
+    with duckdb.connect(database=str(DATABASE_PATH)) as conn:
         for file_path in csv_files:
             file_name = os.path.basename(file_path)
             table_name = re.sub(r"[^0-9a-zA-Z_]", "_", os.path.splitext(file_name)[0])

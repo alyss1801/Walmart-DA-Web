@@ -1,4 +1,4 @@
-transaction_id,date_key,customer_key,product_key,payment_key,category_key,purchase_amount,discount_applied,rating,repeat_customer
+sale_id,date_key,customer_key,product_key,payment_key,category_key,purchase_amount,discount_applied,rating,repeat_customer
 1,20240830,1,2080,1,436,253.26,0,1.0,1
 2,20241221,2,20967,2,437,73.19,1,1.0,0
 3,20241226,3,19161,3,438,125.62,1,1.0,0

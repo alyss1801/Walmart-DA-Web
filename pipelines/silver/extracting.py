@@ -41,6 +41,9 @@ def safe_read_csv(file_path, **kwargs):
     (28 columns in header, 29 in data rows)
     """
 
+    # Convert Path to string if needed
+    file_path = str(file_path)
+    
     if not os.path.exists(file_path):
         raise FileNotFoundError(file_path)
 

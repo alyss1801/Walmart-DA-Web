@@ -1,0 +1,6 @@
+temp_category_key,temp_category,temp_range_min,temp_range_max,description
+1,Freezing,-999,32,Below 32°F - Freezing conditions
+2,Cold,32,50,32-50°F - Cold weather
+3,Cool,50,70,50-70°F - Cool/Comfortable
+4,Warm,70,85,70-85°F - Warm weather
+5,Hot,85,999,Above 85°F - Hot conditions

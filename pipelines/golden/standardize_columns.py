@@ -65,6 +65,8 @@ class ColumnStandardizer:
         self.marketing_df: Optional[pd.DataFrame] = None
         self.walmart_df: Optional[pd.DataFrame] = None
         self.purchases_df: Optional[pd.DataFrame] = None
+        self.temp_df: Optional[pd.DataFrame] = None
+        self.tmdt_walmart_df: Optional[pd.DataFrame] = None
 
     # ------------------------------------------------------------------ #
     # Standardization helpers per dataset
@@ -182,6 +184,108 @@ class ColumnStandardizer:
         )
         return df
 
+    def standardize_store_performance(self) -> Optional[pd.DataFrame]:
+        """Standardize store performance data for FACT_STORE_PERFORMANCE star schema"""
+        path = self.clean_dir / "cleaned_Temp.csv"
+        if not path.exists():
+            logger.warning("Temp data file not found: %s", path)
+            return None
+
+        df = pd.read_csv(path)
+        
+        # Rename columns for consistency
+        rename_map = {
+            "Store": "store_id",
+            "store": "store_id",
+            "Date": "sale_date",
+            "date": "sale_date",
+            "Weekly_Sales": "weekly_sales",
+            "Temperature": "temperature",
+            "Fuel_Price": "fuel_price",
+            "CPI": "cpi",
+            "Unemployment": "unemployment",
+            "Holiday_Flag": "holiday_flag"
+        }
+        df = df.rename(columns={k: v for k, v in rename_map.items() if k in df.columns})
+        
+        # Parse sale_date
+        df["sale_date"] = pd.to_datetime(df["sale_date"], errors="coerce")
+        
+        # Convert numeric columns
+        numeric_cols = ["store_id", "weekly_sales", "temperature", "fuel_price", "cpi", "unemployment"]
+        for col in numeric_cols:
+            if col in df.columns:
+                df[col] = pd.to_numeric(df[col], errors="coerce")
+        
+        # Convert holiday flag to binary
+        if "holiday_flag" in df.columns:
+            df["holiday_flag"] = df["holiday_flag"].fillna(0).astype(int)
+        
+        df["source"] = "store_performance"
+        
+        output_path = self.output_dir / "std_store_performance.csv"
+        df.to_csv(output_path, index=False)
+        logger.info("Store performance standardized -> %s (%d rows)", output_path, len(df))
+        return df
+
+    def standardize_ecommerce_sales(self) -> Optional[pd.DataFrame]:
+        """Standardize e-commerce data for FACT_ECOMMERCE_SALES star schema (NO crawl_timestamp)"""
+        path = self.clean_dir / "cleaned_tmdt_walmart.csv"
+        if not path.exists():
+            logger.warning("TMDT Walmart file not found: %s", path)
+            return None
+
+        df = pd.read_csv(path)
+        
+        # Rename key columns (REMOVE crawl_timestamp entirely)
+        df = df.rename(columns={
+            "Uniq Id": "ecommerce_id",
+            "Product Name": "product_name",
+            "List Price": "list_price",
+            "Sale Price": "sale_price",
+            "Brand": "brand",
+            "Available": "is_available"
+        })
+        
+        # Drop crawl-related columns entirely (as requested)
+        cols_to_drop = ["Crawl Timestamp", "crawl_timestamp", "crawl_day", "crawl_dayofweek"]
+        for col in cols_to_drop:
+            if col in df.columns:
+                df = df.drop(columns=[col])
+        
+        # Generate product_id from product_name
+        df["product_id"] = build_product_ids(df["product_name"])
+        
+        # Parse category into root and subcategory (column is "category" not "category_name")
+        if "category" in df.columns and "root_category" not in df.columns:
+            category_split = df["category"].astype(str).str.split(" \\| ", n=1, expand=True)
+            df["root_category"] = category_split[0] if 0 in category_split.columns else None
+            df["sub_category"] = category_split[1] if 1 in category_split.columns else None
+        
+        # Convert numeric columns
+        numeric_cols = ["list_price", "sale_price", "discount_percentage"]
+        for col in numeric_cols:
+            if col in df.columns:
+                df[col] = pd.to_numeric(df[col], errors="coerce")
+        
+        # Calculate discount amount and percentage
+        if "list_price" in df.columns and "sale_price" in df.columns:
+            df["discount_amount"] = (df["list_price"] - df["sale_price"]).clip(lower=0)
+            df["discount_pct"] = ((df["discount_amount"] / df["list_price"]) * 100).round(2)
+        
+        # Convert available to binary flag (for FACT measures)
+        if "is_available" in df.columns:
+            df["is_available"] = df["is_available"].apply(
+                lambda x: 1 if str(x).lower() in ["true", "1", "yes"] else 0
+            )
+        
+        df["source"] = "ecommerce"
+        
+        output_path = self.output_dir / "std_ecommerce_sales.csv"
+        df.to_csv(output_path, index=False)
+        logger.info("E-commerce sales standardized -> %s (%d rows, NO time dimension)", output_path, len(df))
+        return df
+
     # ------------------------------------------------------------------ #
     # Product master builder
     # ------------------------------------------------------------------ #
@@ -253,6 +357,10 @@ class ColumnStandardizer:
         self.marketing_df = self.standardize_marketing_data()
         self.walmart_df = self.standardize_walmart_products()
         self.purchases_df = self.standardize_customer_purchases()
+        
+        # Star Schema 2 & 3 data sources
+        self.standardize_store_performance()
+        self.standardize_ecommerce_sales()
 
         self.build_product_master()
 

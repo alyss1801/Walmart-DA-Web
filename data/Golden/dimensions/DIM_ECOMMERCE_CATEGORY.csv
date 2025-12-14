@@ -1,0 +1,313 @@
+ecommerce_category_key,root_category,sub_category
+1,Food,"Meal Solutions, Grains & Pasta"
+2,Health,Equate
+3,Electronics,Smart Home
+4,Sports & Outdoors,Bikes
+5,Baby,Feeding
+6,Food,Beverages
+7,Home,Kids Rooms
+8,Household Essentials,Bathroom
+9,Food,"Chocolate, Candy & Gum"
+10,Health,Diabetes Care
+11,Health,Sports Medicine & Injury Recovery Solution
+12,Sports & Outdoors,Sports
+13,Sports & Outdoors,Exercise & Fitness
+14,Sports & Outdoors,Outdoor Sports
+15,Health,Caregiver
+16,Household Essentials,Light Bulbs
+17,Baby,Nursery & Decor
+18,Sports & Outdoors,Sports Fan Shop
+19,Food,"Snacks, Cookies & Chips"
+20,Clothing,Mens Clothing
+21,Health,Superfoods & Cleanses
+22,Food,Fresh Food
+23,Health,Fiber Supplements
+24,Baby,Strollers
+25,Sports & Outdoors,Recreation
+26,Personal Care,Oral Care
+27,Health,Home Health Care
+28,Food,"Condiments, Sauces & Spices"
+29,Toys,Outdoor Play
+30,Beauty,Premium Beauty
+31,Personal Care,Bath & Body
+32,Shop by Brand,All Departments
+33,Food,Breakfast & Cereal
+34,Home Improvement,Paint
+35,Toys,Games & Puzzles
+36,Food,Fresh Cut Flowers
+37,Baby,Baby Activities & Gear
+38,Health,Vitamins & Supplements
+39,Baby,Baby & Toddler Toys
+40,Health,Weight Management
+41,Toys,Kids Bikes & Riding Toys
+42,Baby,Diapering
+43,Personal Care,Feminine Care
+44,Health,Probiotics
+45,Household Essentials,Paper & Plastic
+46,Industrial & Scientific,Janitorial & Sanitation Supplies
+47,Food,Baking
+48,Personal Care,Shaving
+49,Household Essentials,Laundry
+50,Health,Ear Care
+51,Health,Protein & Fitness
+52,Patio & Garden,Patio & Outdoor Decor
+53,Baby,Health & Safety
+54,Personal Care,Sun Care
+55,Pets,Dogs
+56,Household Essentials,Batteries
+57,Arts Crafts & Sewing,Art Supplies
+58,Health,Acid Reflux
+59,Premium Beauty,Premium Fragrance
+60,Baby,Car Seats
+61,Beauty,Beauty Next Day
+62,Health,Foot Care
+63,Auto & Tires,Automotive Tools & Equipment
+64,Health,Allergy and Sinus
+65,Beauty,Here for Every Beauty
+66,Home,Decor
+67,Household Essentials,Cleaning Supplies
+68,Beauty,Skin Care
+69,Beauty,Bath & Body
+70,Toys,Shop Toys by Price
+71,Toys,Remote Control & Play Vehicles
+72,Household Essentials,Air Fresheners
+73,Clothing,Womens Clothing
+74,Household Essentials,Pest Control
+75,Beauty,Travel Size Beauty
+76,Health,Laxatives
+77,Health,Diabetes Care Brands
+78,Food,Gluten-Free Foods
+79,Food,Coffee
+80,Pets,Pet Stain & Odor Remover
+81,Auto & Tires,Automotive Replacement Parts
+82,Household Essentials,Shoe Care & Repair
+83,Premium Beauty,Premium Hair Care & Hair Tools
+84,Home,Bedding
+85,Health,Digestive Health
+86,Party & Occasions,Wilton Baking Supplies
+87,Home,Bath
+88,Premium Beauty,Premium Mens Grooming
+89,Baby,Toddlers Room
+90,Toys,Shop Toys by Age
+91,Clothing,Kids Clothing
+92,Beauty,Hair Care
+93,Health,Eye Care
+94,Clothing,Fashion Brands
+95,Personal Care,Mens Essentials
+96,Premium Beauty,Premium Bath & Body
+97,Personal Care,Deodorants & Antiperspirants
+98,Seasonal,Last Minute Gifts
+99,Health,Medicine Cabinet
+100,Health,Gas Relief
+101,Feature,WOW Items
+102,Home,Appliances
+103,Clothing,Juniors
+104,Health,Cold Cough and Flu
+105,Health,First Aid
+106,Home Improvement,Home Safety
+107,Beauty,Self-Care & Pampering
+108,Party & Occasions,Party Supplies
+109,Food,Organic Foods
+110,Home Improvement,Tools
+111,Health,Lip Care
+112,Premium Beauty,Premium Hair Care
+113,Beauty,Beauty Stock Up
+114,Patio & Garden,Garden Center
+115,Home,Storage & Organization
+116,Beauty,Beauty by Top Brands
+117,Shop by Brand,Sports & Outdoors
+118,Baby,Baby Shower Gifts
+119,Premium Beauty,Premium Facial Skincare
+120,Clothing,Bags & Accessories
+121,Beauty,Beauty by Topic
+122,Home,Featured Shops
+123,Health,Sleep & Snoring Aids
+124,Toys,Pretend Play
+125,Health,Sexual Wellness
+126,Auto & Tires,Automotive Interior
+127,Shop by Brand,Auto & Tires
+128,Food,Frozen Foods
+129,Health,Pain Relievers
+130,Health,Sexual Wellness Top Brands
+131,Health,Childrens Health
+132,Health,Keto Diet
+133,Industrial & Scientific,All Industrial
+134,Industrial & Scientific,Food Service Equipment & Supplies
+135,Food,@ Manual Shelves - Food
+136,Food,Gift Baskets
+137,Personal Care,Clean Living Bath & Body
+138,Personal Care,Restock & Save On Hair Care
+139,Home,Personalized Gifts
+140,Health,Childrens Health Shop
+141,Clothing,Sleepwear Shop
+142,Books,Childrens & Kids Books
+143,Premium Beauty,Premium Makeup
+144,Personal Care,Incontinence
+145,Video Games,"Retro and Arcade Gaming Consoles, Accessories & Games"
+146,Beauty,Fragrances
+147,Shop by Brand,"Health, Beauty & Personal Care"
+148,Health,Family Planning
+149,Personal Care,Mens Personal Care
+150,Food,Seasonal Grocery
+151,Health,Diabetes Management
+152,Industrial & Scientific,Fasteners
+153,Toys,Learning Toys
+154,Home,Kitchen & Dining
+155,Home Improvement,"Heating, Cooling, & Air Quality"
+156,Electronics,Surveillance Equipment
+157,Seasonal,Clean Living Shop
+158,Patio & Garden,Grills & Outdoor Cooking
+159,Books,"Cookbooks, Food & Wine"
+160,Beauty,New Arrivals
+161,Party & Occasions,Halloween
+162,Clothing,Shoes
+163,Clothing,Womens Plus
+164,Pets,Reptiles
+165,Office Supplies,Paper
+166,Clothing,Premium Brands
+167,Home,Teens Rooms
+168,Health,Restock Health Essentials
+169,Clothing,Seasonal Clothing Shops
+170,Party & Occasions,Mardi Gras Party Supplies
+171,Seasonal,Wellness
+172,Home,Furniture
+173,Health,Quit Smoking
+174,Patio & Garden,Hot Tubs & Saunas
+175,Patio & Garden,Patio Furniture
+176,Collectibles,Shop all Collectibles
+177,Health,Back to School Health Essentials
+178,Auto & Tires,RV Parts & Accessories
+179,Books,"House, Home & Gardening Books"
+180,Toys,Stuffed Animals & Plush Toys
+181,Jewelry,Watch Accessories
+182,Party & Occasions,Gift Wrap Supplies
+183,Patio & Garden,Outdoor Lighting
+184,Home Improvement,Water Purification
+185,Shop by Brand,Household Essentials
+186,Jewelry,Kids Jewelry & Watches
+187,Beauty,Makeup
+188,Toys,Arts & Crafts for Kids
+189,Shop by Brand,Home
+190,Books,Literature & Fiction Books
+191,Premium Beauty,Premium Beauty Tech & Skin Devices
+192,Home Improvement,Bathroom Renovation
+193,Shop by Brand,Office Supplies & School Supplies by Brand
+194,Auto & Tires,Exterior Car Accessories
+195,Unknown,Unknown
+196,Beauty,Fragrance Best Sellers
+197,Health,Motion Sickness & Nausea
+198,Food,Kosher Foods
+199,Feature,Nexxus
+200,Clothing,Big & Tall
+201,Premium Beauty,Premium Hair Tools & Accessories
+202,Toys,Dolls & Dollhouses
+203,Electronics,TV & Video
+204,Auto & Tires,Motorcycle
+205,Party & Occasions,Christmas Trees & Christmas Decor
+206,Beauty,Back to College Beauty
+207,Clothing,Character Shop
+208,Auto & Tires,Auto Detailing Paint and Paint Tools
+209,Pets,Horses
+210,Party & Occasions,Iridescent Party Supplies
+211,Toys,Disney Toys
+212,Electronics,Computers
+213,Home Improvement,Safety Equipment and Gear
+214,Toys,Shop Toys by Brand
+215,Home Improvement,Electrical
+216,Beauty,Clearance on Health Beauty Wellness & Personal Care
+217,Pets,Farm Animals
+218,Cell Phones,Cellphone Accessories
+219,Health,Massage
+220,Toys,Electronics for Kids
+221,Food,Super Bowl LII Starts Here
+222,Beauty,Shop by Skin Concern and Type
+223,Health,Aromatherapy
+224,Walmart for Business,Breakroom Supplies
+225,Musical Instruments,Shop Musical Instruments By Brand
+226,Personal Care,Travel Size Toiletries & Kits
+227,Auto & Tires,Advance Auto Parts Shop
+228,Health,Heart Health
+229,Auto & Tires,Oils and Fluids
+230,Health,Headaches
+231,Arts Crafts & Sewing,Sewing
+232,Pets,Cats
+233,Books,History Books
+234,Shop by Brand,Food & Grocery
+235,Shop by Brand,Baby
+236,Auto & Tires,Auto Detailing & Car Care
+237,Food,Uniquely J
+238,Party & Occasions,"Cake, Baking & Pastry Supplies"
+239,Auto & Tires,Auto Body
+240,Office Supplies,Desk & Workspace Organizers
+241,Party & Occasions,Wedding Shop
+242,Arts Crafts & Sewing,Beading & Jewelry Making
+243,Character Shop,Disney Characters
+244,Household Essentials,Household Essentials by Brand
+245,Seasonal,Back to School
+246,Seasonal,Trending Sellers
+247,Shop by Movie,Scoob
+248,Feature,Unicorn Shop
+249,Jewelry,Body Jewelry
+250,Auto & Tires,Tires
+251,Feature,The 80s Shop
+252,Shop by Brand,As Seen on TV
+253,Electronics,Cameras & Camcorders
+254,Shop by Brand,Patio & Garden
+255,Electronics,Portable Audio
+256,Party & Occasions,Valentines Day Party Supplies
+257,Beauty,Beauty Wellness
+258,Clothing,Maternity Clothing
+259,Jewelry,Womens Jewelry & Watches
+260,Party & Occasions,Basketball Party Supplies
+261,Toys,Walmart Exclusive Toys
+262,Clothing,Men
+263,Household Essentials,As Seen On TV
+264,Books,Business & Money Books
+265,Video Games,Video Game Titles
+266,Health,Diabetes Shop
+267,Auto & Tires,Auto Electronics
+268,Toys,Toys Character Shop
+269,Home Improvement,Hardware
+270,Party & Occasions,Jojo Siwa Party Supplies
+271,Personal Care,2-in-1 Hair and Body Care
+272,Auto & Tires,ATV & Off-Road
+273,Electronics,iPad & Tablets
+274,Arts Crafts & Sewing,Scrapbooking
+275,Health,Bedroom Safety & Aids
+276,Health,Restock Wellness Essentials
+277,Baby,Restock on Baby Essentials
+278,Clothing,Swim Shop
+279,Musical Instruments,Instrument Accessories
+280,Household Essentials,Drain & Septic Care
+281,Auto & Tires,Car Safety & Car Security
+282,Shop by Movie,Fast & Furious
+283,Toys,Action Figures
+284,Food,Soups
+285,Pets,Dog Bark Control
+286,Shop by Brand,Home Improvement
+287,Electronics,Audio
+288,Clothing,New Year New You
+289,Character Shop,Nickelodeon Characters
+290,Beauty,@ Manual Shelves - Beauty
+291,Party & Occasions,Sports Party Supplies
+292,Music,Vinyl Records
+293,Industrial & Scientific,Medical & Dental
+294,Beauty,Halloween Makeup and Hair
+295,Health,Medicine Cabinet Must Haves
+296,Books,Language Arts & Disciplines Books
+297,Beauty,Dermatologist Recommended
+298,Shop by Movie,Toy Story 4
+299,Home Improvement,HART Tools
+300,Health,Plant Based Nutrition
+301,Jewelry,Watches
+302,Beauty,Mothers Day
+303,Home Improvement,Emergency Prep
+304,Books,Health & Wellness Books
+305,Books,Psychology & Social Science Books
+306,Shop by Movie,Avengers
+307,Electronics,GPS & Navigation
+308,Character Shop,DC Comics Characters
+309,Patio & Garden,Outdoor Power Equipment
+310,Beauty,Restock Beauty Essentials
+311,Toys,Hobby & Collectibles
+312,Home,Holiday Decor
