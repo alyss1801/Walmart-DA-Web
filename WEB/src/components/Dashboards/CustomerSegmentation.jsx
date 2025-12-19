@@ -6,6 +6,7 @@ import {
 } from 'recharts';
 import { Filter, ChevronDown, Users, ShoppingCart, DollarSign, TrendingUp, Lightbulb, CheckCircle, AlertTriangle } from 'lucide-react';
 import { retailSalesData } from '../../data';
+import ChartAIHelper from '../Charts/ChartAIHelper';
 
 // ============================================================
 // COLOR PALETTE
@@ -296,7 +297,12 @@ const CustomerSegmentation = () => {
         {/* ------------------------------------------------------------ */}
         
         {/* Chart 1: Returned Customer Rate by Age group */}
-        <div className="col-span-7 bg-white rounded-[20px] p-4 border border-gray-200">
+        <div className="col-span-7 bg-white rounded-[20px] p-4 border border-gray-200 relative">
+          <ChartAIHelper
+            chartTitle="Returned Customer Rate by Age Group"
+            chartData={returnedCustomerData}
+            chartInsights="Bar chart showing repeat purchase rate by age group. Higher rate = better customer loyalty. 18-30 has highest rate (51%)."
+          />
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold" style={{ fontFamily: "'Segoe UI', sans-serif" }}>
               Returned Customer Rate by Age group
@@ -329,7 +335,12 @@ const CustomerSegmentation = () => {
         </div>
 
         {/* Chart 2: Total Customers and AOV by month */}
-        <div className="col-span-5 bg-white rounded-[20px] p-4 border border-gray-200">
+        <div className="col-span-5 bg-white rounded-[20px] p-4 border border-gray-200 relative">
+          <ChartAIHelper
+            chartTitle="Total Customers and AOV by Month"
+            chartData={monthlyCustomerData}
+            chartInsights="Combo chart with bars (customers) and line (AOV). Tracks monthly shopping trends. AOV ~$257."
+          />
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold" style={{ fontFamily: "'Segoe UI', sans-serif" }}>
               Total Customers and AOV by month
@@ -364,7 +375,13 @@ const CustomerSegmentation = () => {
         {/* ------------------------------------------------------------ */}
         
         {/* Chart 3: Total Revenue by Age group (Horizontal Bar) */}
-        <div className="col-span-3 bg-white rounded-[20px] p-4 border border-gray-200">
+        <div className="col-span-3 bg-white rounded-[20px] p-4 border border-gray-200 relative">
+          <ChartAIHelper
+            chartTitle="Total Revenue by Age Group"
+            chartData={revenueByAgeGroup}
+            chartInsights="Horizontal bar showing revenue contribution by age. 31-45 leads (35.1%), followed by 46-60 (34.6%)."
+            position="top-left"
+          />
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold" style={{ fontFamily: "'Segoe UI', sans-serif" }}>
               Total Revenue by Age group
@@ -386,7 +403,12 @@ const CustomerSegmentation = () => {
         </div>
 
         {/* Chart 4: Total Revenue by Category and Customer Type (100% Stacked) */}
-        <div className="col-span-4 bg-white rounded-[20px] p-4 border border-gray-200">
+        <div className="col-span-4 bg-white rounded-[20px] p-4 border border-gray-200 relative">
+          <ChartAIHelper
+            chartTitle="Revenue by Category and Customer Type"
+            chartData={categoryCustomerTypeData}
+            chartInsights="100% stacked bar showing New vs Returning customer revenue split by category. ~50/50 split across categories."
+          />
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold" style={{ fontFamily: "'Segoe UI', sans-serif" }}>
               Total Revenue by Category and Customer Type
@@ -427,7 +449,12 @@ const CustomerSegmentation = () => {
         </div>
 
         {/* Chart 5: Total Revenue by Age group and Payment method (100% Stacked Column) */}
-        <div className="col-span-5 bg-white rounded-[20px] p-4 border border-gray-200">
+        <div className="col-span-5 bg-white rounded-[20px] p-4 border border-gray-200 relative">
+          <ChartAIHelper
+            chartTitle="Revenue by Age Group and Payment Method"
+            chartData={agePaymentData}
+            chartInsights="100% stacked column showing payment preferences by age. Credit/Debit cards dominate (~50% combined)."
+          />
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold" style={{ fontFamily: "'Segoe UI', sans-serif" }}>
               Total Revenue by Age group and Payment method

@@ -5,6 +5,7 @@ import {
   ComposedChart, Area
 } from 'recharts';
 import { Filter, ChevronDown, DollarSign, TrendingUp, Fuel, Activity, Lightbulb, CheckCircle, AlertTriangle, Store } from 'lucide-react';
+import ChartAIHelper from '../Charts/ChartAIHelper';
 
 // ============================================================
 // COLOR PALETTE - Optimized for this dashboard
@@ -372,7 +373,12 @@ const StoreSalesPerformance = () => {
       <div className="grid grid-cols-12 gap-4 mb-4">
         
         {/* Chart 1: Sales by Temperature Category (Combo Chart) */}
-        <div className="col-span-7 bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="col-span-7 bg-white rounded-xl p-4 border border-gray-200 shadow-sm relative">
+          <ChartAIHelper
+            chartTitle="Sales & CPI by Temperature Category"
+            chartData={salesByTempData}
+            chartInsights="Combo chart showing weekly sales (bars) and CPI (line) by temperature. Cold weather drives highest sales (35.85%)."
+          />
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold text-gray-800">Sales & CPI by Temperature Category</h3>
             <DropdownFilter
@@ -408,7 +414,12 @@ const StoreSalesPerformance = () => {
         </div>
 
         {/* Chart 5: Fuel Price Trend */}
-        <div className="col-span-5 bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="col-span-5 bg-white rounded-xl p-4 border border-gray-200 shadow-sm relative">
+          <ChartAIHelper
+            chartTitle="Fuel Price Trend Over Time"
+            chartData={fuelPriceData}
+            chartInsights="Line chart showing fuel price from $2.57 to $4.00 (55% increase) over 143 weeks (2010-2012)."
+          />
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold text-gray-800">Fuel Price Trend Over Time</h3>
           </div>
@@ -430,7 +441,12 @@ const StoreSalesPerformance = () => {
       <div className="grid grid-cols-12 gap-4 mb-4">
         
         {/* Chart 2: Unemployment vs Weekly Sales */}
-        <div className="col-span-7 bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="col-span-7 bg-white rounded-xl p-4 border border-gray-200 shadow-sm relative">
+          <ChartAIHelper
+            chartTitle="Unemployment Rate vs Weekly Sales Over Time"
+            chartData={unemploymentSalesData}
+            chartInsights="Area chart (unemployment) + line (sales). Negative correlation: as unemployment decreased 16.7%, sales peaked at $55M/week."
+          />
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold text-gray-800">Unemployment Rate vs Weekly Sales Over Time</h3>
             <DropdownFilter
@@ -463,7 +479,12 @@ const StoreSalesPerformance = () => {
         </div>
 
         {/* Chart 6: Sales by Temperature (Pie) */}
-        <div className="col-span-5 bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="col-span-5 bg-white rounded-xl p-4 border border-gray-200 shadow-sm relative">
+          <ChartAIHelper
+            chartTitle="Sales Distribution by Temperature"
+            chartData={temperaturePieData}
+            chartInsights="Pie chart showing sales share: Cold (35.85%), Warm (26.73%), Cool (22.15%), Freezing (8.03%), Hot (7.24%)."
+          />
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold text-gray-800">Sales Distribution by Temperature</h3>
           </div>
@@ -497,7 +518,13 @@ const StoreSalesPerformance = () => {
       <div className="grid grid-cols-12 gap-4 mb-4">
         
         {/* Chart 3: Top Stores by Sales */}
-        <div className="col-span-5 bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="col-span-5 bg-white rounded-xl p-4 border border-gray-200 shadow-sm relative">
+          <ChartAIHelper
+            chartTitle="Top Performing Stores by Sales"
+            chartData={topStoresData}
+            chartInsights="Horizontal bar ranking stores. Store 4 leads ($650M), Store 20 ($620M), Store 13 ($610M). 45 total stores."
+            position="top-left"
+          />
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold text-gray-800">Top Performing Stores by Sales</h3>
             <DropdownFilter
