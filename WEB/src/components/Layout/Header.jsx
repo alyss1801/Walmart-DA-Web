@@ -7,7 +7,7 @@ const Header = () => {
       {/* Logo & Title */}
       <div className="flex items-center gap-4">
         <img 
-          src="/picture/walmart_logo.png" 
+          src="/walmart_logo.png" 
           alt="Walmart" 
           className="h-10 w-auto"
         />

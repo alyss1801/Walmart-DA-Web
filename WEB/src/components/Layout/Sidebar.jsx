@@ -54,11 +54,11 @@ const Sidebar = ({ currentDashboard, setCurrentDashboard }) => {
     <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
       {/* Logo Section */}
       <div className="p-4 border-b border-gray-200">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <img 
-            src="/picture/alyss_full_logo_transparent.png" 
+            src="/alyss_full_logo_v1.png" 
             alt="Alyss AI" 
-            className="h-10 w-auto"
+            className="h-12 w-auto rounded-lg"
           />
           <div>
             <span className="text-sm font-semibold text-walmart-blue flex items-center gap-1">

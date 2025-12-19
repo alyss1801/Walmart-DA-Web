@@ -137,11 +137,15 @@ const ChatBot = ({ isOpen, onClose, isMinimized, onMinimize }) => {
   if (isMinimized) {
     return (
       <div 
-        className="fixed bottom-4 right-4 bg-gradient-to-r from-walmart-blue to-blue-600 text-white p-4 rounded-full shadow-2xl cursor-pointer hover:scale-105 transition-transform z-50"
+        className="fixed bottom-4 right-4 bg-gradient-to-r from-walmart-blue to-blue-600 text-white p-3 rounded-full shadow-2xl cursor-pointer hover:scale-105 transition-transform z-50"
         onClick={onMinimize}
       >
         <div className="flex items-center gap-2">
-          <Bot className="w-6 h-6" />
+          <img 
+            src="/alyss_logo_no_name.png" 
+            alt="Alyss AI" 
+            className="w-8 h-8 rounded-full object-cover"
+          />
           <span className="font-medium">Alyss AI</span>
           <Maximize2 className="w-4 h-4" />
         </div>
@@ -155,9 +159,11 @@ const ChatBot = ({ isOpen, onClose, isMinimized, onMinimize }) => {
       <div className="bg-gradient-to-r from-walmart-blue to-blue-600 p-4 text-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-              <Bot className="w-6 h-6" />
-            </div>
+            <img 
+              src="/alyss_logo_no_name.png" 
+              alt="Alyss AI" 
+              className="w-10 h-10 rounded-full object-cover"
+            />
             <div>
               <h3 className="font-bold flex items-center gap-1">
                 Alyss AI
@@ -208,7 +214,11 @@ const ChatBot = ({ isOpen, onClose, isMinimized, onMinimize }) => {
             >
               {message.role === 'assistant' && (
                 <div className="flex items-center gap-2 mb-2 pb-2 border-b border-gray-100">
-                  <Bot className="w-4 h-4 text-walmart-blue" />
+                  <img 
+                    src="/alyss_logo_no_name.png" 
+                    alt="Alyss" 
+                    className="w-5 h-5 rounded-full object-cover"
+                  />
                   <span className="text-xs font-medium text-walmart-blue">Alyss</span>
                 </div>
               )}

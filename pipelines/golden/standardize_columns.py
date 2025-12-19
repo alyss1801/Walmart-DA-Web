@@ -199,8 +199,8 @@ class ColumnStandardizer:
         }
         df = df.rename(columns={k: v for k, v in rename_map.items() if k in df.columns})
         
-        # Parse sale_date
-        df["sale_date"] = pd.to_datetime(df["sale_date"], errors="coerce")
+        # Parse sale_date - format is DD-MM-YYYY, need dayfirst=True
+        df["sale_date"] = pd.to_datetime(df["sale_date"], dayfirst=True, errors="coerce")
         
         # Convert numeric columns
         numeric_cols = ["store_id", "weekly_sales", "temperature", "fuel_price", "cpi", "unemployment"]
