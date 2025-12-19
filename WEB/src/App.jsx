@@ -9,6 +9,7 @@ import StoreSalesPerformance from './components/Dashboards/StoreSalesPerformance
 import ReportsPage from './components/Reports/ReportsPage';
 import LoginPage from './components/Auth/LoginPage';
 import WelcomeScreen from './components/Welcome/WelcomeScreen';
+import DashboardSelector from './components/Welcome/DashboardSelector';
 import ChatBot from './components/ChatBot/ChatBot';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
   // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [showDashboardSelector, setShowDashboardSelector] = useState(false);
   const [user, setUser] = useState(null);
 
   // Check for saved session
@@ -27,7 +29,7 @@ function App() {
     if (savedUser) {
       setUser(JSON.parse(savedUser));
       setIsAuthenticated(true);
-      // Don't show welcome screen for returning users
+      // Don't show welcome/selector for returning users
     }
   }, []);
 
@@ -39,6 +41,11 @@ function App() {
 
   const handleWelcomeComplete = () => {
     setShowWelcome(false);
+    setShowDashboardSelector(true); // Show dashboard selector after welcome
+  };
+
+  const handleDashboardSelected = () => {
+    setShowDashboardSelector(false);
     setIsAuthenticated(true);
   };
 
@@ -57,13 +64,22 @@ function App() {
   };
 
   // Show login page if not authenticated
-  if (!isAuthenticated && !showWelcome) {
+  if (!isAuthenticated && !showWelcome && !showDashboardSelector) {
     return <LoginPage onLogin={handleLogin} />;
   }
 
   // Show welcome screen after login
   if (showWelcome) {
     return <WelcomeScreen user={user} onComplete={handleWelcomeComplete} />;
+  }
+
+  // Show dashboard selector after welcome
+  if (showDashboardSelector) {
+    return (
+      <Router>
+        <DashboardSelector onComplete={handleDashboardSelected} />
+      </Router>
+    );
   }
 
   return (
