@@ -8,10 +8,20 @@ import {
   Minimize2,
   Maximize2,
   Trash2,
-  Loader2
+  Loader2,
+  Database,
+  TrendingUp
 } from 'lucide-react';
 import Groq from 'groq-sdk';
 import { chatbotKnowledge } from '../../data';
+import { 
+  retailAnalytics, 
+  storeAnalytics, 
+  ecommerceAnalytics, 
+  crossAnalytics,
+  queryProcessor,
+  generateDataContext 
+} from '../../services/dataAnalytics';
 
 // Initialize Groq client - API key from environment variable
 // Create a .env file with VITE_GROQ_API_KEY=your_api_key
@@ -21,117 +31,102 @@ const groq = new Groq({
 });
 
 // System prompt with comprehensive knowledge base for 3 dashboards
-const SYSTEM_PROMPT = `You are Alyss, an intelligent AI analytics assistant for Walmart's retail analytics dashboard. You have access to a Galaxy Schema data warehouse with 3 Star Schemas and 3 specialized dashboards.
+const SYSTEM_PROMPT = `You are Alyss, an intelligent AI analytics assistant for Walmart's retail analytics dashboard. You have DIRECT ACCESS to real-time data from the Galaxy Schema Data Warehouse with 3 Star Schemas.
 
-=== YOUR KNOWLEDGE BASE ===
-${JSON.stringify(chatbotKnowledge, null, 2)}
+=== YOUR CAPABILITIES ===
+1. You can query REAL DATA from the warehouse to answer specific questions
+2. You provide accurate numbers, percentages, and rankings
+3. You explain data correlations and business insights
+4. You can compare metrics across different time periods and categories
+
+=== LIVE DATA CONTEXT (Updated Real-time) ===
+${generateDataContext()}
 
 === DASHBOARD 1: REVENUE TREND ANALYSIS (2024-2025) ===
 Purpose: Analyze revenue trends, weather impact, and seasonal patterns
 Key Metrics:
-- Total Revenue: ~$12.77M from 50,000 transactions
-- Average Order Value: ~$255
+- Total Revenue: $12.77M from 50,000 transactions
+- Average Order Value: $255.53
 - Customer Rating: 3.0/5.0
-- Unique Customers: ~50,000
+- Unique Customers: 50,000
 
 Key Insights:
 1. WEATHER IMPACT: Cold weather drives highest sales (35.85% of revenue), Hot weather lowest (7.24%)
 2. HOLIDAY EFFECT: Holiday weeks show 6-8% higher revenue than regular weeks
 3. MONTHLY TRENDS: Revenue consistent ~$1M/month with slight peaks in winter months
-4. CATEGORY PERFORMANCE: Electronics leads ($3.26M), followed by Clothing, Home & Kitchen, Sports
-5. TEMPERATURE CORRELATION: 393% gap between Cold and Hot weather sales - major seasonal driver
-
-Charts Available:
-- Monthly Revenue & Orders (Combo Chart)
-- Revenue by Temperature Impact (Bar Chart)
-- Holiday vs Non-Holiday Sales (Donut)
-- Weekday vs Weekend Sales (Pie)
-- Revenue by Category (Bar)
+4. TEMPERATURE CORRELATION: 393% gap between Cold and Hot weather sales
 
 === DASHBOARD 2: CUSTOMER SEGMENTATION & BEHAVIOR (2024-2025) ===
 Purpose: Understand customer demographics, purchasing behavior, payment preferences
 Key Metrics:
-- Total Customers: ~50,000 unique
+- Total Customers: 50,000 unique
 - Age Groups: <18, 18-30, 31-45, 46-60
-- Customer Types: New vs Returning
-- Payment Methods: Cash on Delivery, Credit Card, Debit Card, UPI
 
 Key Insights:
-1. AGE DISTRIBUTION: 31-45 age group largest (35.1%), followed by 46-60 (34.6%), 18-30 (28.0%), <18 (2.3%)
-2. RETURN RATE: 18-30 has highest repeat rate (51%), 31-45 second (48%)
-3. PAYMENT PREFERENCES: Evenly distributed (~25% each method), UPI growing
+1. AGE DISTRIBUTION: 31-45 age group largest (35.1%), 46-60 (34.6%), 18-30 (28.0%), <18 (2.3%)
+2. RETURN RATE: 18-30 has highest repeat rate (51%)
+3. PAYMENT: Evenly distributed (~25% each: Cash, Credit, Debit, UPI)
 4. AOV BY AGE: 31-45 has highest Average Order Value
-5. NEW VS RETURNING: Returning customers contribute ~55% of revenue
-
-Charts Available:
-- Return Rate by Age Group (Column)
-- Total Customers & AOV by Month (Combo)
-- Revenue by Age Group (Horizontal Bar)
-- Revenue by Category & Customer Type (100% Stacked Bar)
-- Revenue by Age & Payment Method (100% Stacked Column)
 
 === DASHBOARD 3: STORE SALES PERFORMANCE (2010-2012) ===
 Purpose: Analyze economic factors impact on store sales
 Key Metrics:
-- Total Revenue: $6.88 Billion
+- Total Revenue: $6.74 Billion
 - Total Stores: 45 Walmart stores
-- Analysis Period: 143 weeks (Feb 2010 - Dec 2012)
-- Avg Weekly Sales: $1.05M
-- Efficiency Ratio: 48.44
+- Analysis Period: 143 weeks
 
 Economic Indicators:
-- CPI (Consumer Price Index): Range 210.0 - 212.1, Avg 210.96
-- Unemployment Rate: Range 7.7% - 8.1%, Avg 7.9%
-- Fuel Price: Range $2.57 - $4.00/gallon, Avg $3.36
+- CPI: Range 126-227, Avg 171.58
+- Unemployment Rate: Range 4.9%-14.3%, Avg 8.0%
+- Fuel Price: Range $2.47-$4.47/gallon, Avg $3.36
 
 Key Insights:
-1. UNEMPLOYMENT CORRELATION: Strong NEGATIVE correlation - when unemployment decreases (390→325), sales increase ($42M→$55M peak)
-2. CPI IMPACT: CPI is STABLE (210-212), minimal impact on sales distribution
-3. TEMPERATURE DRIVER: Cold weather = highest sales (35.85%), this is the PRIMARY driver
-4. FUEL PRICE TREND: 55% increase over period ($2.57→$4.00) but limited sales impact
-5. TOP STORES: Store 4 leads ($650M), Store 20 ($620M), Store 13 ($610M)
-
-Charts Available:
-- Sales & CPI by Temperature (Combo Chart)
-- Unemployment vs Weekly Sales (Dual-Axis Combo)
-- Top Performing Stores (Horizontal Bar)
-- Store Performance by CPI Level (Matrix/Heatmap)
-- Fuel Price Trend (Line Chart)
-- Sales Distribution by Temperature (Pie)
-
-=== RELATIONSHIP SUMMARY: CPI - UNEMPLOYMENT - REVENUE ===
-Analysis of 143 weeks (2010-2012):
-- Unemployment has STRONG NEGATIVE correlation with revenue
-- When unemployment dropped from 8.1% to 7.7%, weekly sales rose from $42M to peak $55M
-- CPI fluctuated narrowly (210-212) and did NOT significantly affect purchasing behavior
-- TEMPERATURE is the PRIMARY driver - cold weather (Cold/Freezing) accounts for 43.88% of total revenue
-- Suggests increased shopping during winter due to holiday preparation and harsh weather
+1. UNEMPLOYMENT CORRELATION: Strong NEGATIVE correlation - when unemployment decreases, sales increase
+2. CPI IMPACT: Wide range but relatively stable impact on purchasing behavior
+3. TEMPERATURE DRIVER: Cold weather = highest sales (primary driver)
+4. TOP STORES: Store 20 leads ($301M), Store 4 ($299M), Store 14 ($289M)
 
 === RESPONSE GUIDELINES ===
-1. When asked about revenue/sales trends → Reference Dashboard 1
-2. When asked about customers/demographics/age groups → Reference Dashboard 2
-3. When asked about stores/economic factors/unemployment/CPI → Reference Dashboard 3
-4. Provide specific numbers and percentages
-5. Explain correlations (negative/positive) when discussing relationships
-6. Suggest which dashboard to explore for more details
-7. Keep responses concise (under 200 words) unless detail is requested
-8. Use Vietnamese if user writes in Vietnamese
+1. ALWAYS cite specific numbers from the data
+2. When uncertain, say "Based on the data I have access to..."
+3. Explain WHY metrics matter for business decisions
+4. Suggest related questions or deeper analysis
+5. Use Vietnamese if user writes in Vietnamese
+6. Format numbers nicely (e.g., $12.77M instead of $12776611.48)
+7. Keep responses under 250 words unless detail is requested
 
-=== YOUR PERSONALITY ===
-- Friendly but professional data analyst
-- Evidence-based, always cite numbers
-- Proactively suggest insights and related metrics
-- Use emojis sparingly for emphasis (📊 📈 💡 🏪 👥)`;
+=== EXAMPLE RESPONSES ===
+Q: "Tháng nào doanh thu cao nhất?"
+A: "📊 Dựa trên dữ liệu Retail Sales 2024-2025, tháng **March** có doanh thu cao nhất với **$1.10M** từ 4,301 đơn hàng. Điều này có thể do nhu cầu mua sắm đầu xuân tăng cao. Tháng thấp nhất là February với $999K."
+
+Q: "Store nào tốt nhất?"
+A: "🏪 Top 5 Stores theo tổng doanh số (2010-2012):
+1. Store 20: $301.4M (Avg weekly: $2.11M)
+2. Store 4: $299.5M
+3. Store 14: $289.0M
+4. Store 13: $286.5M
+5. Store 2: $275.4M
+
+Store 20 và 4 vượt trội với doanh số gấp đôi các store nhỏ hơn."`;
+
+// Pre-computed insights for quick responses
+const QUICK_INSIGHTS = {
+  topMonth: retailAnalytics.getTopMonth(),
+  lowestMonth: retailAnalytics.getLowestMonth(),
+  topStores: storeAnalytics.getTopStores(5),
+  allKPIs: crossAnalytics.getAllKPIs()
+};
 
 const ChatBot = ({ isOpen, onClose, isMinimized, onMinimize }) => {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "👋 Xin chào! Tôi là Alyss, trợ lý phân tích AI của bạn. Tôi có thể giúp bạn khám phá Galaxy Schema Data Warehouse của Walmart với 3 Dashboard:\n\n📊 **Revenue Trend Analysis** - Xu hướng doanh thu, tác động thời tiết\n👥 **Customer Segmentation** - Phân khúc khách hàng, hành vi mua sắm\n🏪 **Store Performance** - Hiệu suất cửa hàng, yếu tố kinh tế\n\nBạn muốn biết điều gì?"
+      content: "👋 Xin chào! Tôi là **Alyss**, trợ lý phân tích AI với khả năng truy vấn dữ liệu **TRỰC TIẾP** từ Galaxy Schema Data Warehouse!\n\n🔍 **Khả năng mới:**\n• Query dữ liệu real-time từ 3 Star Schemas\n• Phân tích trends, so sánh metrics\n• Trả lời câu hỏi cụ thể với số liệu chính xác\n\n💡 **Thử hỏi tôi:**\n• \"Tháng nào doanh thu cao nhất?\"\n• \"Top 5 store bán chạy nhất?\"\n• \"Tỉ lệ thất nghiệp ảnh hưởng doanh số thế nào?\""
     }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [queryResult, setQueryResult] = useState(null);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -147,34 +142,57 @@ const ChatBot = ({ isOpen, onClose, isMinimized, onMinimize }) => {
 
     const userMessage = { role: 'user', content: input };
     setMessages(prev => [...prev, userMessage]);
+    const userQuery = input;
     setInput('');
     setIsLoading(true);
 
     try {
+      // First, try to process the query locally for quick data lookups
+      const localResult = queryProcessor.processQuery(userQuery);
+      
+      // Build enhanced prompt with query result context
+      let enhancedPrompt = userQuery;
+      if (localResult && localResult.type !== 'summary') {
+        enhancedPrompt = `User Question: ${userQuery}\n\n[DATA QUERY RESULT]\nType: ${localResult.type}\nContext: ${localResult.context}\nData: ${localResult.formatted}${localResult.insight ? `\nInsight: ${localResult.insight}` : ''}\n\nPlease provide a helpful response using this data. Format nicely and add business insights.`;
+      }
+
       const response = await groq.chat.completions.create({
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           ...messages.map(m => ({ role: m.role, content: m.content })),
-          { role: 'user', content: input }
+          { role: 'user', content: enhancedPrompt }
         ],
         model: 'llama-3.3-70b-versatile',
         temperature: 0.7,
-        max_tokens: 500,
+        max_tokens: 600,
         top_p: 1
       });
 
       const assistantMessage = {
         role: 'assistant',
-        content: response.choices[0]?.message?.content || "I apologize, I couldn't process that request. Please try again."
+        content: response.choices[0]?.message?.content || "I apologize, I couldn't process that request. Please try again.",
+        dataSource: localResult?.type !== 'summary' ? localResult?.context : null
       };
       
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Groq API error:', error);
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: "⚠️ I'm having trouble connecting to my AI backend. Please check your internet connection and try again."
-      }]);
+      
+      // Fallback: If API fails, try to respond with local data
+      const localResult = queryProcessor.processQuery(userQuery);
+      if (localResult && localResult.type !== 'summary') {
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: `📊 **${localResult.context}**\n\n${localResult.formatted}${localResult.insight ? `\n\n💡 **Insight:** ${localResult.insight}` : ''}`,
+          dataSource: localResult.context,
+          isLocalFallback: true
+        }]);
+      } else {
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: "⚠️ Đang có lỗi kết nối AI. Vui lòng thử lại sau hoặc hỏi câu hỏi cụ thể hơn về dữ liệu (doanh thu, store, khách hàng, tháng...)."
+        }]);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -190,16 +208,16 @@ const ChatBot = ({ isOpen, onClose, isMinimized, onMinimize }) => {
   const clearChat = () => {
     setMessages([{
       role: 'assistant',
-      content: "👋 Đã xóa chat! Tôi có thể giúp gì về phân tích dữ liệu hôm nay?\n\n💡 Thử hỏi về:\n- Xu hướng doanh thu theo thời tiết\n- Phân khúc khách hàng theo độ tuổi\n- Mối quan hệ CPI - Unemployment - Revenue"
+      content: "👋 Đã xóa chat! Tôi có thể query dữ liệu real-time cho bạn.\n\n🎯 **Các loại câu hỏi tôi giỏi:**\n• Doanh thu theo tháng/store/nhiệt độ\n• Phân tích khách hàng theo độ tuổi\n• So sánh các chỉ số kinh tế\n• Ranking stores, products, brands"
     }]);
   };
 
-  // Quick question buttons - Updated for 3 dashboards
+  // Quick question buttons - Updated for data queries
   const quickQuestions = [
-    "Tác động thời tiết đến doanh thu?",
-    "Phân khúc khách hàng nào lớn nhất?",
-    "Mối quan hệ CPI và Unemployment?",
-    "Store nào doanh thu cao nhất?"
+    "Tháng nào doanh thu cao nhất?",
+    "Top 5 store bán chạy nhất?",
+    "Tỉ lệ thất nghiệp trung bình?",
+    "Có bao nhiêu khách hàng?"
   ];
 
   if (!isOpen) return null;
@@ -290,6 +308,17 @@ const ChatBot = ({ isOpen, onClose, isMinimized, onMinimize }) => {
                     className="w-5 h-5 rounded-full object-cover"
                   />
                   <span className="text-xs font-medium text-walmart-blue">Alyss</span>
+                  {message.dataSource && (
+                    <span className="flex items-center gap-1 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                      <Database className="w-3 h-3" />
+                      Live Data
+                    </span>
+                  )}
+                  {message.isLocalFallback && (
+                    <span className="text-[10px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">
+                      Offline Mode
+                    </span>
+                  )}
                 </div>
               )}
               <div className="text-sm whitespace-pre-wrap leading-relaxed">
@@ -360,8 +389,9 @@ const ChatBot = ({ isOpen, onClose, isMinimized, onMinimize }) => {
             <Send className="w-5 h-5" />
           </button>
         </div>
-        <p className="text-xs text-gray-400 mt-2 text-center">
-          Powered by Groq • Llama 3.3 70B
+        <p className="text-xs text-gray-400 mt-2 text-center flex items-center justify-center gap-2">
+          <TrendingUp className="w-3 h-3" />
+          Powered by Groq + Live Data Analytics
         </p>
       </div>
     </div>
