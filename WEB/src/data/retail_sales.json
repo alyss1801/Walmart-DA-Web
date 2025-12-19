@@ -1,0 +1,307 @@
+{
+  "generatedAt": "2025-12-19T15:25:19.770303",
+  "source": "DuckDB walmart_analytics.db",
+  "totalRevenue": 12776611.48,
+  "totalOrders": 50000,
+  "avgOrderValue": 255.53,
+  "avgRating": 2.999,
+  "uniqueCustomers": 50000,
+  "revenueByMonth": [
+    {
+      "month": "Jan",
+      "monthName": "January",
+      "revenue": 1066162.87,
+      "orders": 4230
+    },
+    {
+      "month": "Feb",
+      "monthName": "February",
+      "revenue": 998954.51,
+      "orders": 3930
+    },
+    {
+      "month": "Mar",
+      "monthName": "March",
+      "revenue": 1096915.31,
+      "orders": 4301
+    },
+    {
+      "month": "Apr",
+      "monthName": "April",
+      "revenue": 1044547.67,
+      "orders": 4079
+    },
+    {
+      "month": "May",
+      "monthName": "May",
+      "revenue": 1078867.98,
+      "orders": 4227
+    },
+    {
+      "month": "Jun",
+      "monthName": "June",
+      "revenue": 1047367.77,
+      "orders": 4058
+    },
+    {
+      "month": "Jul",
+      "monthName": "July",
+      "revenue": 1081042.04,
+      "orders": 4197
+    },
+    {
+      "month": "Aug",
+      "monthName": "August",
+      "revenue": 1078813.36,
+      "orders": 4217
+    },
+    {
+      "month": "Sep",
+      "monthName": "September",
+      "revenue": 1054858.58,
+      "orders": 4112
+    },
+    {
+      "month": "Oct",
+      "monthName": "October",
+      "revenue": 1081708.11,
+      "orders": 4257
+    },
+    {
+      "month": "Nov",
+      "monthName": "November",
+      "revenue": 1072828.45,
+      "orders": 4148
+    },
+    {
+      "month": "Dec",
+      "monthName": "December",
+      "revenue": 1074544.83,
+      "orders": 4244
+    }
+  ],
+  "revenueByCategory": [
+    {
+      "category": null,
+      "revenue": 12776611.48,
+      "orders": 50000,
+      "avgRating": 2.999,
+      "color": "#0071CE"
+    }
+  ],
+  "revenueByPayment": [
+    {
+      "method": "Debit Card",
+      "revenue": 3209382.11,
+      "orders": 12589,
+      "percentage": 25.1
+    },
+    {
+      "method": "Credit Card",
+      "revenue": 3197688.67,
+      "orders": 12528,
+      "percentage": 25.0
+    },
+    {
+      "method": "Cash on Delivery",
+      "revenue": 3195777.32,
+      "orders": 12496,
+      "percentage": 25.0
+    },
+    {
+      "method": "UPI",
+      "revenue": 3173763.38,
+      "orders": 12387,
+      "percentage": 24.8
+    }
+  ],
+  "paymentMethods": [
+    {
+      "method": "Debit Card",
+      "revenue": 3209382.11,
+      "orders": 12589
+    },
+    {
+      "method": "Credit Card",
+      "revenue": 3197688.67,
+      "orders": 12528
+    },
+    {
+      "method": "Cash on Delivery",
+      "revenue": 3195777.32,
+      "orders": 12496
+    },
+    {
+      "method": "UPI",
+      "revenue": 3173763.38,
+      "orders": 12387
+    }
+  ],
+  "customerDemographics": {
+    "ageGroups": [
+      {
+        "ageGroup": "<18",
+        "count": 1162,
+        "percentage": 2.3
+      },
+      {
+        "ageGroup": "18-30",
+        "count": 14023,
+        "percentage": 28.0
+      },
+      {
+        "ageGroup": "31-45",
+        "count": 17528,
+        "percentage": 35.1
+      },
+      {
+        "ageGroup": "46-60",
+        "count": 17287,
+        "percentage": 34.6
+      }
+    ],
+    "genderSplit": [
+      {
+        "gender": "Other",
+        "count": 16751,
+        "percentage": 33.5
+      },
+      {
+        "gender": "Male",
+        "count": 16644,
+        "percentage": 33.3
+      },
+      {
+        "gender": "Female",
+        "count": 16605,
+        "percentage": 33.2
+      }
+    ]
+  },
+  "customerByAgeGroup": [
+    {
+      "ageGroup": "<18",
+      "count": 1162,
+      "percentage": 2.3
+    },
+    {
+      "ageGroup": "18-30",
+      "count": 14023,
+      "percentage": 28.0
+    },
+    {
+      "ageGroup": "31-45",
+      "count": 17528,
+      "percentage": 35.1
+    },
+    {
+      "ageGroup": "46-60",
+      "count": 17287,
+      "percentage": 34.6
+    }
+  ],
+  "customerByGender": [
+    {
+      "gender": "Other",
+      "count": 16751,
+      "percentage": 33.5
+    },
+    {
+      "gender": "Male",
+      "count": 16644,
+      "percentage": 33.3
+    },
+    {
+      "gender": "Female",
+      "count": 16605,
+      "percentage": 33.2
+    }
+  ],
+  "categoryPerformance": [
+    {
+      "category": null,
+      "revenue": 12776611.48,
+      "orders": 50000,
+      "avgRating": 2.999
+    }
+  ],
+  "ratingDistribution": [
+    {
+      "rating": 1,
+      "count": 10099,
+      "percentage": 20.2
+    },
+    {
+      "rating": 2,
+      "count": 9971,
+      "percentage": 19.9
+    },
+    {
+      "rating": 3,
+      "count": 9856,
+      "percentage": 19.7
+    },
+    {
+      "rating": 4,
+      "count": 10045,
+      "percentage": 20.1
+    },
+    {
+      "rating": 5,
+      "count": 10029,
+      "percentage": 20.1
+    }
+  ],
+  "topCities": [
+    {
+      "city": "North Michael",
+      "revenue": 11478.75,
+      "orders": 42
+    },
+    {
+      "city": "East Michael",
+      "revenue": 10866.51,
+      "orders": 36
+    },
+    {
+      "city": "New Michael",
+      "revenue": 10574.68,
+      "orders": 44
+    },
+    {
+      "city": "Lake Michael",
+      "revenue": 10500.51,
+      "orders": 41
+    },
+    {
+      "city": "West Michael",
+      "revenue": 9361.14,
+      "orders": 33
+    },
+    {
+      "city": "Port Michael",
+      "revenue": 8889.4,
+      "orders": 34
+    },
+    {
+      "city": "Lake Robert",
+      "revenue": 8879.58,
+      "orders": 29
+    },
+    {
+      "city": "South Michael",
+      "revenue": 8472.4,
+      "orders": 34
+    },
+    {
+      "city": "West Christopher",
+      "revenue": 8469.14,
+      "orders": 31
+    },
+    {
+      "city": "South John",
+      "revenue": 8410.31,
+      "orders": 31
+    }
+  ]
+}

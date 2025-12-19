@@ -1,18 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Bot, Sparkles } from 'lucide-react';
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
-import SalesPerformance from './components/Dashboards/SalesPerformance';
-import StorePerformance from './components/Dashboards/StorePerformance';
-import EcommerceDashboard from './components/Dashboards/EcommerceDashboard';
-import CustomerAnalytics from './components/Dashboards/CustomerAnalytics';
+import RevenueTrendAnalysis from './components/Dashboards/RevenueTrendAnalysis';
+import CustomerSegmentation from './components/Dashboards/CustomerSegmentation';
+import StoreSalesPerformance from './components/Dashboards/StoreSalesPerformance';
+import ReportsPage from './components/Reports/ReportsPage';
+import LoginPage from './components/Auth/LoginPage';
+import WelcomeScreen from './components/Welcome/WelcomeScreen';
 import ChatBot from './components/ChatBot/ChatBot';
 
 function App() {
-  const [currentDashboard, setCurrentDashboard] = useState('Sales Performance');
+  const [currentDashboard, setCurrentDashboard] = useState('Revenue Trend');
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
+  
+  // Authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [user, setUser] = useState(null);
+
+  // Check for saved session
+  useEffect(() => {
+    const savedUser = localStorage.getItem('walmart_user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+      setIsAuthenticated(true);
+      // Don't show welcome screen for returning users
+    }
+  }, []);
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+    setShowWelcome(true); // Show welcome screen after login
+    localStorage.setItem('walmart_user', JSON.stringify(userData));
+  };
+
+  const handleWelcomeComplete = () => {
+    setShowWelcome(false);
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+    localStorage.removeItem('walmart_user');
+  };
 
   const toggleChat = () => {
     if (isChatMinimized) {
@@ -22,25 +56,39 @@ function App() {
     }
   };
 
+  // Show login page if not authenticated
+  if (!isAuthenticated && !showWelcome) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
+  // Show welcome screen after login
+  if (showWelcome) {
+    return <WelcomeScreen user={user} onComplete={handleWelcomeComplete} />;
+  }
+
   return (
     <Router>
       <div className="flex h-screen bg-gray-50">
         {/* Sidebar */}
-        <Sidebar currentDashboard={currentDashboard} setCurrentDashboard={setCurrentDashboard} />
+        <Sidebar 
+          currentDashboard={currentDashboard} 
+          setCurrentDashboard={setCurrentDashboard}
+          user={user}
+          onLogout={handleLogout}
+        />
         
         {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Header */}
-          <Header />
+          <Header user={user} onLogout={handleLogout} />
           
           {/* Dashboard Content */}
-          <main className="flex-1 overflow-y-auto p-6">
+          <main className="flex-1 overflow-y-auto p-6" id="dashboard-content">
             <Routes>
-              <Route path="/" element={<SalesPerformance />} />
-              <Route path="/sales" element={<SalesPerformance />} />
-              <Route path="/store" element={<StorePerformance />} />
-              <Route path="/ecommerce" element={<EcommerceDashboard />} />
-              <Route path="/customer" element={<CustomerAnalytics />} />
+              <Route path="/" element={<RevenueTrendAnalysis />} />
+              <Route path="/segmentation" element={<CustomerSegmentation />} />
+              <Route path="/store-performance" element={<StoreSalesPerformance />} />
+              <Route path="/reports" element={<ReportsPage />} />
             </Routes>
           </main>
         </div>

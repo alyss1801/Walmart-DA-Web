@@ -1,52 +1,45 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
-  BarChart3, 
-  Store, 
-  ShoppingBag, 
-  Users, 
   Settings, 
   FileText,
-  Sparkles
+  Sparkles,
+  TrendingUp,
+  UserCircle,
+  Store,
+  LogOut
 } from 'lucide-react';
 
-const Sidebar = ({ currentDashboard, setCurrentDashboard }) => {
+const Sidebar = ({ currentDashboard, setCurrentDashboard, user, onLogout }) => {
   const location = useLocation();
 
   const navItems = [
     { 
-      name: 'Sales Performance', 
-      icon: BarChart3, 
-      path: '/sales',
-      description: 'Retail Sales 2024-2025'
+      name: 'Revenue Trend', 
+      icon: TrendingUp, 
+      path: '/',
+      description: 'Revenue Analysis Dashboard'
+    },
+    { 
+      name: 'Customer Segmentation', 
+      icon: UserCircle, 
+      path: '/segmentation',
+      description: 'Segmentation & Behavior'
     },
     { 
       name: 'Store Performance', 
       icon: Store, 
-      path: '/store',
-      description: 'Store Analytics 2010-2012'
-    },
-    { 
-      name: 'E-commerce', 
-      icon: ShoppingBag, 
-      path: '/ecommerce',
-      description: 'Product Catalog 2019'
-    },
-    { 
-      name: 'Customer Analytics', 
-      icon: Users, 
-      path: '/customer',
-      description: 'Demographics & Behavior'
+      path: '/store-performance',
+      description: 'Economic Factors Impact'
     },
   ];
 
   const bottomItems = [
-    { name: 'Settings', icon: Settings, path: '/settings' },
     { name: 'Reports', icon: FileText, path: '/reports' },
+    { name: 'Settings', icon: Settings, path: '/settings' },
   ];
 
   const isActive = (path) => {
-    if (path === '/sales' && location.pathname === '/') return true;
     return location.pathname === path;
   };
 
@@ -68,6 +61,23 @@ const Sidebar = ({ currentDashboard, setCurrentDashboard }) => {
           </div>
         </div>
       </div>
+
+      {/* User Info */}
+      {user && (
+        <div className="p-4 border-b border-gray-200 bg-gray-50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-walmart-blue flex items-center justify-center">
+              <span className="text-white font-bold text-sm">
+                {user.name?.charAt(0) || 'U'}
+              </span>
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-gray-800">{user.name}</p>
+              <p className="text-xs text-gray-500">@{user.userId}</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Navigation */}
       <nav className="flex-1 p-4 space-y-1">
@@ -107,17 +117,33 @@ const Sidebar = ({ currentDashboard, setCurrentDashboard }) => {
       <div className="p-4 border-t border-gray-200 space-y-1">
         {bottomItems.map((item) => {
           const Icon = item.icon;
+          const active = isActive(item.path);
           return (
             <Link
               key={item.name}
               to={item.path}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors
+                ${active 
+                  ? 'bg-blue-50 text-walmart-blue' 
+                  : 'text-gray-600 hover:bg-gray-100'
+                }`}
             >
-              <Icon className="w-5 h-5 text-gray-500" />
+              <Icon className={`w-5 h-5 ${active ? 'text-walmart-blue' : 'text-gray-500'}`} />
               <span className="text-sm font-medium">{item.name}</span>
             </Link>
           );
         })}
+        
+        {/* Logout Button */}
+        {onLogout && (
+          <button
+            onClick={onLogout}
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors w-full"
+          >
+            <LogOut className="w-5 h-5" />
+            <span className="text-sm font-medium">Logout</span>
+          </button>
+        )}
       </div>
 
       {/* Galaxy Schema Badge */}

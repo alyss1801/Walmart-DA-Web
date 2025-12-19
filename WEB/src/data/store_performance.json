@@ -1,0 +1,505 @@
+{
+  "generatedAt": "2025-12-19T15:25:19.797606",
+  "source": "DuckDB walmart_analytics.db",
+  "totalWeeklySales": 6737218987.11,
+  "totalRecords": 6435,
+  "avgWeeklySales": 1046964.88,
+  "totalStores": 45,
+  "avgTemperature": 60.7,
+  "avgFuelPrice": 3.359,
+  "avgCPI": 171.58,
+  "avgUnemployment": 8.0,
+  "salesByStore": [
+    {
+      "store": "Store 20",
+      "region": "USA",
+      "totalSales": 301397792.46,
+      "avgSales": 2107676.87
+    },
+    {
+      "store": "Store 4",
+      "region": "USA",
+      "totalSales": 299543953.38,
+      "avgSales": 2094712.96
+    },
+    {
+      "store": "Store 14",
+      "region": "USA",
+      "totalSales": 288999911.34,
+      "avgSales": 2020978.4
+    },
+    {
+      "store": "Store 13",
+      "region": "USA",
+      "totalSales": 286517703.8,
+      "avgSales": 2003620.31
+    },
+    {
+      "store": "Store 2",
+      "region": "USA",
+      "totalSales": 275382440.98,
+      "avgSales": 1925751.34
+    },
+    {
+      "store": "Store 10",
+      "region": "USA",
+      "totalSales": 271617713.89,
+      "avgSales": 1899424.57
+    },
+    {
+      "store": "Store 27",
+      "region": "USA",
+      "totalSales": 253855916.88,
+      "avgSales": 1775216.2
+    },
+    {
+      "store": "Store 6",
+      "region": "USA",
+      "totalSales": 223756130.64,
+      "avgSales": 1564728.19
+    },
+    {
+      "store": "Store 1",
+      "region": "USA",
+      "totalSales": 222402808.85,
+      "avgSales": 1555264.4
+    },
+    {
+      "store": "Store 39",
+      "region": "USA",
+      "totalSales": 207445542.47,
+      "avgSales": 1450668.13
+    },
+    {
+      "store": "Store 19",
+      "region": "USA",
+      "totalSales": 206634862.1,
+      "avgSales": 1444999.04
+    },
+    {
+      "store": "Store 31",
+      "region": "USA",
+      "totalSales": 199613905.5,
+      "avgSales": 1395901.44
+    },
+    {
+      "store": "Store 23",
+      "region": "USA",
+      "totalSales": 198750617.85,
+      "avgSales": 1389864.46
+    },
+    {
+      "store": "Store 24",
+      "region": "USA",
+      "totalSales": 194016021.28,
+      "avgSales": 1356755.39
+    },
+    {
+      "store": "Store 11",
+      "region": "USA",
+      "totalSales": 193962786.8,
+      "avgSales": 1356383.12
+    }
+  ],
+  "salesByYear": [
+    {
+      "year": 2010,
+      "totalSales": 2288886120.41,
+      "avgSales": 1059669.5,
+      "weeks": 2160
+    },
+    {
+      "year": 2011,
+      "totalSales": 2448200007.35,
+      "avgSales": 1046239.32,
+      "weeks": 2340
+    },
+    {
+      "year": 2012,
+      "totalSales": 2000132859.35,
+      "avgSales": 1033660.39,
+      "weeks": 1935
+    }
+  ],
+  "salesByMonth": [
+    {
+      "month": "Jan",
+      "monthName": "January",
+      "totalSales": 332598438.49,
+      "avgSales": 923884.55
+    },
+    {
+      "month": "Feb",
+      "monthName": "February",
+      "totalSales": 568727890.45,
+      "avgSales": 1053199.8
+    },
+    {
+      "month": "Mar",
+      "monthName": "March",
+      "totalSales": 592785901.28,
+      "avgSales": 1013309.23
+    },
+    {
+      "month": "Apr",
+      "monthName": "April",
+      "totalSales": 646859784.97,
+      "avgSales": 1026761.56
+    },
+    {
+      "month": "May",
+      "monthName": "May",
+      "totalSales": 557125571.95,
+      "avgSales": 1031714.02
+    },
+    {
+      "month": "Jun",
+      "monthName": "June",
+      "totalSales": 622629886.84,
+      "avgSales": 1064324.59
+    },
+    {
+      "month": "Jul",
+      "monthName": "July",
+      "totalSales": 650000977.25,
+      "avgSales": 1031747.58
+    },
+    {
+      "month": "Aug",
+      "monthName": "August",
+      "totalSales": 613090208.82,
+      "avgSales": 1048017.45
+    },
+    {
+      "month": "Sep",
+      "monthName": "September",
+      "totalSales": 578761179.26,
+      "avgSales": 989335.35
+    },
+    {
+      "month": "Oct",
+      "monthName": "October",
+      "totalSales": 584784787.59,
+      "avgSales": 999632.12
+    },
+    {
+      "month": "Nov",
+      "monthName": "November",
+      "totalSales": 413015725.01,
+      "avgSales": 1147265.9
+    },
+    {
+      "month": "Dec",
+      "monthName": "December",
+      "totalSales": 576838635.2,
+      "avgSales": 1281863.63
+    }
+  ],
+  "temperatureImpact": [
+    {
+      "tempCategory": "Cold",
+      "avgSales": 1113703.34,
+      "count": 1340
+    },
+    {
+      "tempCategory": "Freezing",
+      "avgSales": 1050917.57,
+      "count": 515
+    },
+    {
+      "tempCategory": "Cool",
+      "avgSales": 1047313.3,
+      "count": 2306
+    },
+    {
+      "tempCategory": "Warm",
+      "avgSales": 1041593.13,
+      "count": 1729
+    },
+    {
+      "tempCategory": "Hot",
+      "avgSales": 894706.37,
+      "count": 545
+    }
+  ],
+  "holidayImpact": [
+    {
+      "period": "Non-Holiday",
+      "totalSales": 6231919435.55,
+      "avgSales": 1041256.38,
+      "weeks": 5985
+    },
+    {
+      "period": "Holiday",
+      "totalSales": 505299551.56,
+      "avgSales": 1122887.89,
+      "weeks": 450
+    }
+  ],
+  "economicTrend": [
+    {
+      "year": 2010,
+      "month": 2,
+      "avgSales": 1057405.46,
+      "avgFuelPrice": 2.692,
+      "avgCPI": 167.83,
+      "avgUnemployment": 8.62
+    },
+    {
+      "year": 2010,
+      "month": 3,
+      "avgSales": 1010665.57,
+      "avgFuelPrice": 2.787,
+      "avgCPI": 167.93,
+      "avgUnemployment": 8.62
+    },
+    {
+      "year": 2010,
+      "month": 4,
+      "avgSales": 1028499.41,
+      "avgFuelPrice": 2.869,
+      "avgCPI": 167.68,
+      "avgUnemployment": 8.5
+    },
+    {
+      "year": 2010,
+      "month": 5,
+      "avgSales": 1037282.97,
+      "avgFuelPrice": 2.917,
+      "avgCPI": 167.64,
+      "avgUnemployment": 8.5
+    },
+    {
+      "year": 2010,
+      "month": 6,
+      "avgSales": 1068034.29,
+      "avgFuelPrice": 2.788,
+      "avgCPI": 168.0,
+      "avgUnemployment": 8.5
+    },
+    {
+      "year": 2010,
+      "month": 7,
+      "avgSales": 1033689.45,
+      "avgFuelPrice": 2.774,
+      "avgCPI": 168.0,
+      "avgUnemployment": 8.43
+    },
+    {
+      "year": 2010,
+      "month": 8,
+      "avgSales": 1042445.06,
+      "avgFuelPrice": 2.783,
+      "avgCPI": 168.21,
+      "avgUnemployment": 8.43
+    },
+    {
+      "year": 2010,
+      "month": 9,
+      "avgSales": 984821.65,
+      "avgFuelPrice": 2.735,
+      "avgCPI": 168.26,
+      "avgUnemployment": 8.43
+    },
+    {
+      "year": 2010,
+      "month": 10,
+      "avgSales": 965163.66,
+      "avgFuelPrice": 2.807,
+      "avgCPI": 168.45,
+      "avgUnemployment": 8.48
+    },
+    {
+      "year": 2010,
+      "month": 11,
+      "avgSales": 1126963.17,
+      "avgFuelPrice": 2.886,
+      "avgCPI": 168.6,
+      "avgUnemployment": 8.48
+    },
+    {
+      "year": 2010,
+      "month": 12,
+      "avgSales": 1283380.15,
+      "avgFuelPrice": 2.988,
+      "avgCPI": 168.46,
+      "avgUnemployment": 8.48
+    },
+    {
+      "year": 2011,
+      "month": 1,
+      "avgSales": 909466.48,
+      "avgFuelPrice": 3.114,
+      "avgCPI": 168.79,
+      "avgUnemployment": 8.29
+    },
+    {
+      "year": 2011,
+      "month": 2,
+      "avgSales": 1035174.04,
+      "avgFuelPrice": 3.173,
+      "avgCPI": 169.59,
+      "avgUnemployment": 8.29
+    },
+    {
+      "year": 2011,
+      "month": 3,
+      "avgSales": 996424.71,
+      "avgFuelPrice": 3.522,
+      "avgCPI": 170.32,
+      "avgUnemployment": 8.29
+    },
+    {
+      "year": 2011,
+      "month": 4,
+      "avgSales": 1006784.49,
+      "avgFuelPrice": 3.77,
+      "avgCPI": 171.0,
+      "avgUnemployment": 8.15
+    },
+    {
+      "year": 2011,
+      "month": 5,
+      "avgSales": 1009156.43,
+      "avgFuelPrice": 3.964,
+      "avgCPI": 171.38,
+      "avgUnemployment": 8.15
+    },
+    {
+      "year": 2011,
+      "month": 6,
+      "avgSales": 1054296.58,
+      "avgFuelPrice": 3.784,
+      "avgCPI": 171.23,
+      "avgUnemployment": 8.15
+    },
+    {
+      "year": 2011,
+      "month": 7,
+      "avgSales": 1021828.44,
+      "avgFuelPrice": 3.689,
+      "avgCPI": 171.57,
+      "avgUnemployment": 8.1
+    },
+    {
+      "year": 2011,
+      "month": 8,
+      "avgSales": 1047774.07,
+      "avgFuelPrice": 3.696,
+      "avgCPI": 171.89,
+      "avgUnemployment": 8.1
+    },
+    {
+      "year": 2011,
+      "month": 9,
+      "avgSales": 981545.5,
+      "avgFuelPrice": 3.646,
+      "avgCPI": 172.25,
+      "avgUnemployment": 8.1
+    },
+    {
+      "year": 2011,
+      "month": 10,
+      "avgSales": 1018118.24,
+      "avgFuelPrice": 3.524,
+      "avgCPI": 172.91,
+      "avgUnemployment": 7.8
+    },
+    {
+      "year": 2011,
+      "month": 11,
+      "avgSales": 1167568.64,
+      "avgFuelPrice": 3.483,
+      "avgCPI": 173.26,
+      "avgUnemployment": 7.8
+    },
+    {
+      "year": 2011,
+      "month": 12,
+      "avgSales": 1280347.12,
+      "avgFuelPrice": 3.331,
+      "avgCPI": 173.75,
+      "avgUnemployment": 7.8
+    },
+    {
+      "year": 2012,
+      "month": 1,
+      "avgSales": 938302.62,
+      "avgFuelPrice": 3.368,
+      "avgCPI": 174.27,
+      "avgUnemployment": 7.51
+    },
+    {
+      "year": 2012,
+      "month": 2,
+      "avgSales": 1067019.89,
+      "avgFuelPrice": 3.534,
+      "avgCPI": 174.62,
+      "avgUnemployment": 7.51
+    },
+    {
+      "year": 2012,
+      "month": 3,
+      "avgSales": 1028931.78,
+      "avgFuelPrice": 3.816,
+      "avgCPI": 175.14,
+      "avgUnemployment": 7.51
+    },
+    {
+      "year": 2012,
+      "month": 4,
+      "avgSales": 1049560.59,
+      "avgFuelPrice": 3.975,
+      "avgCPI": 175.5,
+      "avgUnemployment": 7.42
+    },
+    {
+      "year": 2012,
+      "month": 5,
+      "avgSales": 1048702.66,
+      "avgFuelPrice": 3.85,
+      "avgCPI": 175.62,
+      "avgUnemployment": 7.42
+    },
+    {
+      "year": 2012,
+      "month": 6,
+      "avgSales": 1069379.24,
+      "avgFuelPrice": 3.64,
+      "avgCPI": 175.6,
+      "avgUnemployment": 7.42
+    },
+    {
+      "year": 2012,
+      "month": 7,
+      "avgSales": 1041719.18,
+      "avgFuelPrice": 3.505,
+      "avgCPI": 175.67,
+      "avgUnemployment": 7.24
+    },
+    {
+      "year": 2012,
+      "month": 8,
+      "avgSales": 1052670.07,
+      "avgFuelPrice": 3.689,
+      "avgCPI": 175.78,
+      "avgUnemployment": 7.24
+    },
+    {
+      "year": 2012,
+      "month": 9,
+      "avgSales": 1003586.36,
+      "avgFuelPrice": 3.864,
+      "avgCPI": 176.19,
+      "avgUnemployment": 7.24
+    },
+    {
+      "year": 2012,
+      "month": 10,
+      "avgSales": 1024231.56,
+      "avgFuelPrice": 3.853,
+      "avgCPI": 176.61,
+      "avgUnemployment": 6.95
+    }
+  ]
+}

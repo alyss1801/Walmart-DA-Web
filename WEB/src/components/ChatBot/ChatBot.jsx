@@ -11,7 +11,7 @@ import {
   Loader2
 } from 'lucide-react';
 import Groq from 'groq-sdk';
-import { chatbotKnowledge } from '../../data/walmartData';
+import { chatbotKnowledge } from '../../data';
 
 // Initialize Groq client - API key from environment variable
 // Create a .env file with VITE_GROQ_API_KEY=your_api_key
@@ -20,44 +20,114 @@ const groq = new Groq({
   dangerouslyAllowBrowser: true
 });
 
-// System prompt with knowledge base
-const SYSTEM_PROMPT = `You are Alyss, an intelligent AI analytics assistant for Walmart's retail analytics dashboard. You have access to a Galaxy Schema data warehouse with 3 Star Schemas.
+// System prompt with comprehensive knowledge base for 3 dashboards
+const SYSTEM_PROMPT = `You are Alyss, an intelligent AI analytics assistant for Walmart's retail analytics dashboard. You have access to a Galaxy Schema data warehouse with 3 Star Schemas and 3 specialized dashboards.
 
-YOUR KNOWLEDGE BASE:
+=== YOUR KNOWLEDGE BASE ===
 ${JSON.stringify(chatbotKnowledge, null, 2)}
 
-KEY FACTS TO REMEMBER:
-- Star Schema 1 (Retail Sales): 50,000 transactions, $12.77M revenue, 4 categories (Electronics, Clothing, Home & Kitchen, Sports), 16 products
-- Star Schema 2 (Store Performance): 45 stores, 6,435 weekly records, $6.7B total sales (2010-2012)
-- Star Schema 3 (E-commerce): 30,170 products, 10,746 brands, avg price $51.94
+=== DASHBOARD 1: REVENUE TREND ANALYSIS (2024-2025) ===
+Purpose: Analyze revenue trends, weather impact, and seasonal patterns
+Key Metrics:
+- Total Revenue: ~$12.77M from 50,000 transactions
+- Average Order Value: ~$255
+- Customer Rating: 3.0/5.0
+- Unique Customers: ~50,000
 
-TOP INSIGHTS:
-- Electronics is the top category by revenue ($3.26M)
-- Monthly revenue averages ~$1M
-- 31-45 age group is the largest customer segment (35.1%)
-- Holiday weeks show 6-8% higher sales than regular weeks
-- Payment methods are evenly distributed (~25% each)
+Key Insights:
+1. WEATHER IMPACT: Cold weather drives highest sales (35.85% of revenue), Hot weather lowest (7.24%)
+2. HOLIDAY EFFECT: Holiday weeks show 6-8% higher revenue than regular weeks
+3. MONTHLY TRENDS: Revenue consistent ~$1M/month with slight peaks in winter months
+4. CATEGORY PERFORMANCE: Electronics leads ($3.26M), followed by Clothing, Home & Kitchen, Sports
+5. TEMPERATURE CORRELATION: 393% gap between Cold and Hot weather sales - major seasonal driver
 
-YOUR PERSONALITY:
-- Friendly but professional
-- Data-driven and analytical
-- Provide specific numbers when asked
-- Suggest relevant dashboards when appropriate
-- Keep responses concise but informative
-- Use emojis sparingly for emphasis
+Charts Available:
+- Monthly Revenue & Orders (Combo Chart)
+- Revenue by Temperature Impact (Bar Chart)
+- Holiday vs Non-Holiday Sales (Donut)
+- Weekday vs Weekend Sales (Pie)
+- Revenue by Category (Bar)
 
-RESPONSE GUIDELINES:
-- Answer questions about the data warehouse, analytics, and business insights
-- If asked about something not in your knowledge base, say so politely
-- Suggest which dashboard to check for more details
-- Format numbers nicely (use $, K, M, B appropriately)
-- Keep responses under 200 words unless detail is requested`;
+=== DASHBOARD 2: CUSTOMER SEGMENTATION & BEHAVIOR (2024-2025) ===
+Purpose: Understand customer demographics, purchasing behavior, payment preferences
+Key Metrics:
+- Total Customers: ~50,000 unique
+- Age Groups: <18, 18-30, 31-45, 46-60
+- Customer Types: New vs Returning
+- Payment Methods: Cash on Delivery, Credit Card, Debit Card, UPI
+
+Key Insights:
+1. AGE DISTRIBUTION: 31-45 age group largest (35.1%), followed by 46-60 (34.6%), 18-30 (28.0%), <18 (2.3%)
+2. RETURN RATE: 18-30 has highest repeat rate (51%), 31-45 second (48%)
+3. PAYMENT PREFERENCES: Evenly distributed (~25% each method), UPI growing
+4. AOV BY AGE: 31-45 has highest Average Order Value
+5. NEW VS RETURNING: Returning customers contribute ~55% of revenue
+
+Charts Available:
+- Return Rate by Age Group (Column)
+- Total Customers & AOV by Month (Combo)
+- Revenue by Age Group (Horizontal Bar)
+- Revenue by Category & Customer Type (100% Stacked Bar)
+- Revenue by Age & Payment Method (100% Stacked Column)
+
+=== DASHBOARD 3: STORE SALES PERFORMANCE (2010-2012) ===
+Purpose: Analyze economic factors impact on store sales
+Key Metrics:
+- Total Revenue: $6.88 Billion
+- Total Stores: 45 Walmart stores
+- Analysis Period: 143 weeks (Feb 2010 - Dec 2012)
+- Avg Weekly Sales: $1.05M
+- Efficiency Ratio: 48.44
+
+Economic Indicators:
+- CPI (Consumer Price Index): Range 210.0 - 212.1, Avg 210.96
+- Unemployment Rate: Range 7.7% - 8.1%, Avg 7.9%
+- Fuel Price: Range $2.57 - $4.00/gallon, Avg $3.36
+
+Key Insights:
+1. UNEMPLOYMENT CORRELATION: Strong NEGATIVE correlation - when unemployment decreases (390→325), sales increase ($42M→$55M peak)
+2. CPI IMPACT: CPI is STABLE (210-212), minimal impact on sales distribution
+3. TEMPERATURE DRIVER: Cold weather = highest sales (35.85%), this is the PRIMARY driver
+4. FUEL PRICE TREND: 55% increase over period ($2.57→$4.00) but limited sales impact
+5. TOP STORES: Store 4 leads ($650M), Store 20 ($620M), Store 13 ($610M)
+
+Charts Available:
+- Sales & CPI by Temperature (Combo Chart)
+- Unemployment vs Weekly Sales (Dual-Axis Combo)
+- Top Performing Stores (Horizontal Bar)
+- Store Performance by CPI Level (Matrix/Heatmap)
+- Fuel Price Trend (Line Chart)
+- Sales Distribution by Temperature (Pie)
+
+=== RELATIONSHIP SUMMARY: CPI - UNEMPLOYMENT - REVENUE ===
+Analysis of 143 weeks (2010-2012):
+- Unemployment has STRONG NEGATIVE correlation with revenue
+- When unemployment dropped from 8.1% to 7.7%, weekly sales rose from $42M to peak $55M
+- CPI fluctuated narrowly (210-212) and did NOT significantly affect purchasing behavior
+- TEMPERATURE is the PRIMARY driver - cold weather (Cold/Freezing) accounts for 43.88% of total revenue
+- Suggests increased shopping during winter due to holiday preparation and harsh weather
+
+=== RESPONSE GUIDELINES ===
+1. When asked about revenue/sales trends → Reference Dashboard 1
+2. When asked about customers/demographics/age groups → Reference Dashboard 2
+3. When asked about stores/economic factors/unemployment/CPI → Reference Dashboard 3
+4. Provide specific numbers and percentages
+5. Explain correlations (negative/positive) when discussing relationships
+6. Suggest which dashboard to explore for more details
+7. Keep responses concise (under 200 words) unless detail is requested
+8. Use Vietnamese if user writes in Vietnamese
+
+=== YOUR PERSONALITY ===
+- Friendly but professional data analyst
+- Evidence-based, always cite numbers
+- Proactively suggest insights and related metrics
+- Use emojis sparingly for emphasis (📊 📈 💡 🏪 👥)`;
 
 const ChatBot = ({ isOpen, onClose, isMinimized, onMinimize }) => {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "👋 Hi! I'm Alyss, your AI analytics assistant. I can help you explore Walmart's Galaxy Schema data warehouse with 3 Star Schemas covering:\n\n📊 **Retail Sales** - 50K transactions, $12.77M revenue\n🏬 **Store Performance** - 45 stores, 2010-2012 data\n🛒 **E-commerce** - 30K products, 10K brands\n\nWhat would you like to know?"
+      content: "👋 Xin chào! Tôi là Alyss, trợ lý phân tích AI của bạn. Tôi có thể giúp bạn khám phá Galaxy Schema Data Warehouse của Walmart với 3 Dashboard:\n\n📊 **Revenue Trend Analysis** - Xu hướng doanh thu, tác động thời tiết\n👥 **Customer Segmentation** - Phân khúc khách hàng, hành vi mua sắm\n🏪 **Store Performance** - Hiệu suất cửa hàng, yếu tố kinh tế\n\nBạn muốn biết điều gì?"
     }
   ]);
   const [input, setInput] = useState('');
@@ -120,16 +190,16 @@ const ChatBot = ({ isOpen, onClose, isMinimized, onMinimize }) => {
   const clearChat = () => {
     setMessages([{
       role: 'assistant',
-      content: "👋 Chat cleared! How can I help you with your analytics today?"
+      content: "👋 Đã xóa chat! Tôi có thể giúp gì về phân tích dữ liệu hôm nay?\n\n💡 Thử hỏi về:\n- Xu hướng doanh thu theo thời tiết\n- Phân khúc khách hàng theo độ tuổi\n- Mối quan hệ CPI - Unemployment - Revenue"
     }]);
   };
 
-  // Quick question buttons
+  // Quick question buttons - Updated for 3 dashboards
   const quickQuestions = [
-    "What's the total revenue?",
-    "Top performing category?",
-    "Customer demographics",
-    "Holiday sales impact"
+    "Tác động thời tiết đến doanh thu?",
+    "Phân khúc khách hàng nào lớn nhất?",
+    "Mối quan hệ CPI và Unemployment?",
+    "Store nào doanh thu cao nhất?"
   ];
 
   if (!isOpen) return null;
