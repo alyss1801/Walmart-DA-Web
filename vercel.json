@@ -1,0 +1,6 @@
+{
+  "framework": "vite",
+  "buildCommand": "cd WEB && npm install && npm run build",
+  "outputDirectory": "WEB/dist",
+  "installCommand": "echo 'Using buildCommand instead'"
+}

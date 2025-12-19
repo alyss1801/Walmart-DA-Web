@@ -1,0 +1,1125 @@
+{
+  "generated_at": "2025-12-19T15:25:19.704280",
+  "summary": {
+    "total_checks": 96,
+    "passed": 96,
+    "failed": 0,
+    "pass_rate": "100.0%",
+    "by_stage": {
+      "raw": {
+        "passed": 11,
+        "failed": 0
+      },
+      "silver": {
+        "passed": 15,
+        "failed": 0
+      },
+      "golden_dim": {
+        "passed": 44,
+        "failed": 0
+      },
+      "golden_fact": {
+        "passed": 26,
+        "failed": 0
+      }
+    },
+    "failed_checks": []
+  },
+  "details": [
+    {
+      "check_name": "file_exists",
+      "stage": "raw",
+      "table": "cleaned_products_API",
+      "passed": true,
+      "message": "File found: cleaned_products_API.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:18.907645"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "raw",
+      "table": "cleaned_products_API",
+      "passed": true,
+      "message": "Row count: 4,452 (min: 100)",
+      "details": {
+        "row_count": 4452,
+        "min_required": 100
+      },
+      "timestamp": "2025-12-19T15:25:18.960279"
+    },
+    {
+      "check_name": "null_check:us_item_id",
+      "stage": "raw",
+      "table": "cleaned_products_API",
+      "passed": true,
+      "message": "Nulls in 'us_item_id': 0 (0.00%)",
+      "details": {
+        "column": "us_item_id",
+        "null_count": 0,
+        "null_ratio": 0.0
+      },
+      "timestamp": "2025-12-19T15:25:18.960959"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "raw",
+      "table": "marketing_data",
+      "passed": true,
+      "message": "File found: marketing_data.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:18.961408"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "raw",
+      "table": "marketing_data",
+      "passed": true,
+      "message": "Row count: 29,991 (min: 100)",
+      "details": {
+        "row_count": 29991,
+        "min_required": 100
+      },
+      "timestamp": "2025-12-19T15:25:19.127653"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "raw",
+      "table": "Walmart_customer_purchases",
+      "passed": true,
+      "message": "File found: Walmart_customer_purchases.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.128188"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "raw",
+      "table": "Walmart_customer_purchases",
+      "passed": true,
+      "message": "Row count: 50,000 (min: 100)",
+      "details": {
+        "row_count": 50000,
+        "min_required": 100
+      },
+      "timestamp": "2025-12-19T15:25:19.192786"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "raw",
+      "table": "walmart_products",
+      "passed": true,
+      "message": "File found: walmart_products.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.193228"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "raw",
+      "table": "walmart_products",
+      "passed": true,
+      "message": "Row count: 1,000 (min: 100)",
+      "details": {
+        "row_count": 1000,
+        "min_required": 100
+      },
+      "timestamp": "2025-12-19T15:25:19.268519"
+    },
+    {
+      "check_name": "null_check:product_id",
+      "stage": "raw",
+      "table": "walmart_products",
+      "passed": true,
+      "message": "Nulls in 'product_id': 0 (0.00%)",
+      "details": {
+        "column": "product_id",
+        "null_count": 0,
+        "null_ratio": 0.0
+      },
+      "timestamp": "2025-12-19T15:25:19.269094"
+    },
+    {
+      "check_name": "null_check:product_name",
+      "stage": "raw",
+      "table": "walmart_products",
+      "passed": true,
+      "message": "Nulls in 'product_name': 0 (0.00%)",
+      "details": {
+        "column": "product_name",
+        "null_count": 0,
+        "null_ratio": 0.0
+      },
+      "timestamp": "2025-12-19T15:25:19.269420"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "silver",
+      "table": "cleaned_cleaned_products_API",
+      "passed": true,
+      "message": "File found: cleaned_cleaned_products_API.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.271744"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "silver",
+      "table": "cleaned_cleaned_products_API",
+      "passed": true,
+      "message": "Row count: 4,452 (min: 1)",
+      "details": {
+        "row_count": 4452,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.329165"
+    },
+    {
+      "check_name": "null_check:us_item_id",
+      "stage": "silver",
+      "table": "cleaned_cleaned_products_API",
+      "passed": true,
+      "message": "Nulls in 'us_item_id': 0 (0.00%)",
+      "details": {
+        "column": "us_item_id",
+        "null_count": 0,
+        "null_ratio": 0.0
+      },
+      "timestamp": "2025-12-19T15:25:19.330078"
+    },
+    {
+      "check_name": "unique_key:us_item_id",
+      "stage": "silver",
+      "table": "cleaned_cleaned_products_API",
+      "passed": true,
+      "message": "Duplicates in 'us_item_id': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.330435"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "silver",
+      "table": "cleaned_marketing_data",
+      "passed": true,
+      "message": "File found: cleaned_marketing_data.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.330708"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "silver",
+      "table": "cleaned_marketing_data",
+      "passed": true,
+      "message": "Row count: 29,991 (min: 1)",
+      "details": {
+        "row_count": 29991,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.436791"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "silver",
+      "table": "cleaned_Walmart_customer_purchases",
+      "passed": true,
+      "message": "File found: cleaned_Walmart_customer_purchases.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.437293"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "silver",
+      "table": "cleaned_Walmart_customer_purchases",
+      "passed": true,
+      "message": "Row count: 50,000 (min: 1)",
+      "details": {
+        "row_count": 50000,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.500922"
+    },
+    {
+      "check_name": "null_check:customer_id",
+      "stage": "silver",
+      "table": "cleaned_Walmart_customer_purchases",
+      "passed": true,
+      "message": "Nulls in 'customer_id': 0 (0.00%)",
+      "details": {
+        "column": "customer_id",
+        "null_count": 0,
+        "null_ratio": 0.0
+      },
+      "timestamp": "2025-12-19T15:25:19.502844"
+    },
+    {
+      "check_name": "null_check:purchase_amount",
+      "stage": "silver",
+      "table": "cleaned_Walmart_customer_purchases",
+      "passed": true,
+      "message": "Nulls in 'purchase_amount': 0 (0.00%)",
+      "details": {
+        "column": "purchase_amount",
+        "null_count": 0,
+        "null_ratio": 0.0
+      },
+      "timestamp": "2025-12-19T15:25:19.503348"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "silver",
+      "table": "cleaned_walmart_products",
+      "passed": true,
+      "message": "File found: cleaned_walmart_products.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.503689"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "silver",
+      "table": "cleaned_walmart_products",
+      "passed": true,
+      "message": "Row count: 968 (min: 1)",
+      "details": {
+        "row_count": 968,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.510190"
+    },
+    {
+      "check_name": "null_check:product_id",
+      "stage": "silver",
+      "table": "cleaned_walmart_products",
+      "passed": true,
+      "message": "Nulls in 'product_id': 0 (0.00%)",
+      "details": {
+        "column": "product_id",
+        "null_count": 0,
+        "null_ratio": 0.0
+      },
+      "timestamp": "2025-12-19T15:25:19.510592"
+    },
+    {
+      "check_name": "null_check:product_name",
+      "stage": "silver",
+      "table": "cleaned_walmart_products",
+      "passed": true,
+      "message": "Nulls in 'product_name': 0 (0.00%)",
+      "details": {
+        "column": "product_name",
+        "null_count": 0,
+        "null_ratio": 0.0
+      },
+      "timestamp": "2025-12-19T15:25:19.510943"
+    },
+    {
+      "check_name": "unique_key:product_id",
+      "stage": "silver",
+      "table": "cleaned_walmart_products",
+      "passed": true,
+      "message": "Duplicates in 'product_id': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.511157"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_dim",
+      "table": "DIM_DATE",
+      "passed": true,
+      "message": "File found: DIM_DATE.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.512149"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_dim",
+      "table": "DIM_DATE",
+      "passed": true,
+      "message": "Row count: 486 (min: 1)",
+      "details": {
+        "row_count": 486,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.513607"
+    },
+    {
+      "check_name": "unique_key:date_key",
+      "stage": "golden_dim",
+      "table": "DIM_DATE",
+      "passed": true,
+      "message": "Duplicates in 'date_key': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.513899"
+    },
+    {
+      "check_name": "schema_validation",
+      "stage": "golden_dim",
+      "table": "DIM_DATE",
+      "passed": true,
+      "message": "All 4 columns present",
+      "details": {
+        "missing_columns": [],
+        "expected": [
+          "date_key",
+          "full_date",
+          "year",
+          "month"
+        ]
+      },
+      "timestamp": "2025-12-19T15:25:19.514010"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_dim",
+      "table": "DIM_DATE_STORE",
+      "passed": true,
+      "message": "File found: DIM_DATE_STORE.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.514200"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_dim",
+      "table": "DIM_DATE_STORE",
+      "passed": true,
+      "message": "Row count: 995 (min: 1)",
+      "details": {
+        "row_count": 995,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.515866"
+    },
+    {
+      "check_name": "unique_key:date_key",
+      "stage": "golden_dim",
+      "table": "DIM_DATE_STORE",
+      "passed": true,
+      "message": "Duplicates in 'date_key': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.516189"
+    },
+    {
+      "check_name": "schema_validation",
+      "stage": "golden_dim",
+      "table": "DIM_DATE_STORE",
+      "passed": true,
+      "message": "All 2 columns present",
+      "details": {
+        "missing_columns": [],
+        "expected": [
+          "date_key",
+          "full_date"
+        ]
+      },
+      "timestamp": "2025-12-19T15:25:19.516287"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_dim",
+      "table": "DIM_CUSTOMER",
+      "passed": true,
+      "message": "File found: DIM_CUSTOMER.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.516443"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_dim",
+      "table": "DIM_CUSTOMER",
+      "passed": true,
+      "message": "Row count: 50,000 (min: 1)",
+      "details": {
+        "row_count": 50000,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.556279"
+    },
+    {
+      "check_name": "unique_key:customer_key",
+      "stage": "golden_dim",
+      "table": "DIM_CUSTOMER",
+      "passed": true,
+      "message": "Duplicates in 'customer_key': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.557123"
+    },
+    {
+      "check_name": "schema_validation",
+      "stage": "golden_dim",
+      "table": "DIM_CUSTOMER",
+      "passed": true,
+      "message": "All 2 columns present",
+      "details": {
+        "missing_columns": [],
+        "expected": [
+          "customer_key",
+          "customer_id"
+        ]
+      },
+      "timestamp": "2025-12-19T15:25:19.557364"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_dim",
+      "table": "DIM_PRODUCT",
+      "passed": true,
+      "message": "File found: DIM_PRODUCT.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.557584"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_dim",
+      "table": "DIM_PRODUCT",
+      "passed": true,
+      "message": "Row count: 16 (min: 1)",
+      "details": {
+        "row_count": 16,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.558537"
+    },
+    {
+      "check_name": "unique_key:product_key",
+      "stage": "golden_dim",
+      "table": "DIM_PRODUCT",
+      "passed": true,
+      "message": "Duplicates in 'product_key': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.558881"
+    },
+    {
+      "check_name": "schema_validation",
+      "stage": "golden_dim",
+      "table": "DIM_PRODUCT",
+      "passed": true,
+      "message": "All 2 columns present",
+      "details": {
+        "missing_columns": [],
+        "expected": [
+          "product_key",
+          "product_name"
+        ]
+      },
+      "timestamp": "2025-12-19T15:25:19.559056"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_dim",
+      "table": "DIM_PAYMENT",
+      "passed": true,
+      "message": "File found: DIM_PAYMENT.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.559217"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_dim",
+      "table": "DIM_PAYMENT",
+      "passed": true,
+      "message": "Row count: 4 (min: 1)",
+      "details": {
+        "row_count": 4,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.559852"
+    },
+    {
+      "check_name": "unique_key:payment_key",
+      "stage": "golden_dim",
+      "table": "DIM_PAYMENT",
+      "passed": true,
+      "message": "Duplicates in 'payment_key': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.560149"
+    },
+    {
+      "check_name": "schema_validation",
+      "stage": "golden_dim",
+      "table": "DIM_PAYMENT",
+      "passed": true,
+      "message": "All 2 columns present",
+      "details": {
+        "missing_columns": [],
+        "expected": [
+          "payment_key",
+          "payment_method"
+        ]
+      },
+      "timestamp": "2025-12-19T15:25:19.560236"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_dim",
+      "table": "DIM_CATEGORY",
+      "passed": true,
+      "message": "File found: DIM_CATEGORY.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.560366"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_dim",
+      "table": "DIM_CATEGORY",
+      "passed": true,
+      "message": "Row count: 439 (min: 1)",
+      "details": {
+        "row_count": 439,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.561254"
+    },
+    {
+      "check_name": "unique_key:category_key",
+      "stage": "golden_dim",
+      "table": "DIM_CATEGORY",
+      "passed": true,
+      "message": "Duplicates in 'category_key': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.561618"
+    },
+    {
+      "check_name": "schema_validation",
+      "stage": "golden_dim",
+      "table": "DIM_CATEGORY",
+      "passed": true,
+      "message": "All 2 columns present",
+      "details": {
+        "missing_columns": [],
+        "expected": [
+          "category_key",
+          "category_name"
+        ]
+      },
+      "timestamp": "2025-12-19T15:25:19.561775"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_dim",
+      "table": "DIM_STORE",
+      "passed": true,
+      "message": "File found: DIM_STORE.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.561975"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_dim",
+      "table": "DIM_STORE",
+      "passed": true,
+      "message": "Row count: 45 (min: 1)",
+      "details": {
+        "row_count": 45,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.562678"
+    },
+    {
+      "check_name": "unique_key:store_key",
+      "stage": "golden_dim",
+      "table": "DIM_STORE",
+      "passed": true,
+      "message": "Duplicates in 'store_key': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.563249"
+    },
+    {
+      "check_name": "schema_validation",
+      "stage": "golden_dim",
+      "table": "DIM_STORE",
+      "passed": true,
+      "message": "All 2 columns present",
+      "details": {
+        "missing_columns": [],
+        "expected": [
+          "store_key",
+          "store_id"
+        ]
+      },
+      "timestamp": "2025-12-19T15:25:19.563403"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_dim",
+      "table": "DIM_TEMPERATURE",
+      "passed": true,
+      "message": "File found: DIM_TEMPERATURE.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.563562"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_dim",
+      "table": "DIM_TEMPERATURE",
+      "passed": true,
+      "message": "Row count: 5 (min: 1)",
+      "details": {
+        "row_count": 5,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.564527"
+    },
+    {
+      "check_name": "unique_key:temp_category_key",
+      "stage": "golden_dim",
+      "table": "DIM_TEMPERATURE",
+      "passed": true,
+      "message": "Duplicates in 'temp_category_key': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.564770"
+    },
+    {
+      "check_name": "schema_validation",
+      "stage": "golden_dim",
+      "table": "DIM_TEMPERATURE",
+      "passed": true,
+      "message": "All 2 columns present",
+      "details": {
+        "missing_columns": [],
+        "expected": [
+          "temp_category_key",
+          "temp_category"
+        ]
+      },
+      "timestamp": "2025-12-19T15:25:19.564864"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_dim",
+      "table": "DIM_ECOMMERCE_PRODUCT",
+      "passed": true,
+      "message": "File found: DIM_ECOMMERCE_PRODUCT.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.565004"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_dim",
+      "table": "DIM_ECOMMERCE_PRODUCT",
+      "passed": true,
+      "message": "Row count: 29,754 (min: 1)",
+      "details": {
+        "row_count": 29754,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.607039"
+    },
+    {
+      "check_name": "unique_key:ecommerce_product_key",
+      "stage": "golden_dim",
+      "table": "DIM_ECOMMERCE_PRODUCT",
+      "passed": true,
+      "message": "Duplicates in 'ecommerce_product_key': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.608037"
+    },
+    {
+      "check_name": "schema_validation",
+      "stage": "golden_dim",
+      "table": "DIM_ECOMMERCE_PRODUCT",
+      "passed": true,
+      "message": "All 2 columns present",
+      "details": {
+        "missing_columns": [],
+        "expected": [
+          "ecommerce_product_key",
+          "product_name"
+        ]
+      },
+      "timestamp": "2025-12-19T15:25:19.608455"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_dim",
+      "table": "DIM_ECOMMERCE_CATEGORY",
+      "passed": true,
+      "message": "File found: DIM_ECOMMERCE_CATEGORY.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.608736"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_dim",
+      "table": "DIM_ECOMMERCE_CATEGORY",
+      "passed": true,
+      "message": "Row count: 312 (min: 1)",
+      "details": {
+        "row_count": 312,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.609725"
+    },
+    {
+      "check_name": "unique_key:ecommerce_category_key",
+      "stage": "golden_dim",
+      "table": "DIM_ECOMMERCE_CATEGORY",
+      "passed": true,
+      "message": "Duplicates in 'ecommerce_category_key': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.610068"
+    },
+    {
+      "check_name": "schema_validation",
+      "stage": "golden_dim",
+      "table": "DIM_ECOMMERCE_CATEGORY",
+      "passed": true,
+      "message": "All 2 columns present",
+      "details": {
+        "missing_columns": [],
+        "expected": [
+          "ecommerce_category_key",
+          "root_category"
+        ]
+      },
+      "timestamp": "2025-12-19T15:25:19.610235"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_dim",
+      "table": "DIM_ECOMMERCE_BRAND",
+      "passed": true,
+      "message": "File found: DIM_ECOMMERCE_BRAND.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.610472"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_dim",
+      "table": "DIM_ECOMMERCE_BRAND",
+      "passed": true,
+      "message": "Row count: 10,746 (min: 1)",
+      "details": {
+        "row_count": 10746,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.614841"
+    },
+    {
+      "check_name": "unique_key:brand_key",
+      "stage": "golden_dim",
+      "table": "DIM_ECOMMERCE_BRAND",
+      "passed": true,
+      "message": "Duplicates in 'brand_key': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.615179"
+    },
+    {
+      "check_name": "schema_validation",
+      "stage": "golden_dim",
+      "table": "DIM_ECOMMERCE_BRAND",
+      "passed": true,
+      "message": "All 2 columns present",
+      "details": {
+        "missing_columns": [],
+        "expected": [
+          "brand_key",
+          "brand"
+        ]
+      },
+      "timestamp": "2025-12-19T15:25:19.615281"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_fact",
+      "table": "FACT_SALES",
+      "passed": true,
+      "message": "File found: FACT_SALES.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.615462"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_fact",
+      "table": "FACT_SALES",
+      "passed": true,
+      "message": "Row count: 50,000 (min: 1)",
+      "details": {
+        "row_count": 50000,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.640079"
+    },
+    {
+      "check_name": "unique_key:sale_id",
+      "stage": "golden_fact",
+      "table": "FACT_SALES",
+      "passed": true,
+      "message": "Duplicates in 'sale_id': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.641019"
+    },
+    {
+      "check_name": "fk_integrity:date_key",
+      "stage": "golden_fact",
+      "table": "FACT_SALES",
+      "passed": true,
+      "message": "FK 'date_key' -> DIM_DATE: orphans=0, sentinel(-1)=0",
+      "details": {
+        "orphan_count": 0,
+        "sentinel_count": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.644327"
+    },
+    {
+      "check_name": "fk_integrity:customer_key",
+      "stage": "golden_fact",
+      "table": "FACT_SALES",
+      "passed": true,
+      "message": "FK 'customer_key' -> DIM_CUSTOMER: orphans=0, sentinel(-1)=0",
+      "details": {
+        "orphan_count": 0,
+        "sentinel_count": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.654092"
+    },
+    {
+      "check_name": "fk_integrity:product_key",
+      "stage": "golden_fact",
+      "table": "FACT_SALES",
+      "passed": true,
+      "message": "FK 'product_key' -> DIM_PRODUCT: orphans=0, sentinel(-1)=0",
+      "details": {
+        "orphan_count": 0,
+        "sentinel_count": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.655296"
+    },
+    {
+      "check_name": "fk_integrity:payment_key",
+      "stage": "golden_fact",
+      "table": "FACT_SALES",
+      "passed": true,
+      "message": "FK 'payment_key' -> DIM_PAYMENT: orphans=0, sentinel(-1)=0",
+      "details": {
+        "orphan_count": 0,
+        "sentinel_count": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.656106"
+    },
+    {
+      "check_name": "fk_integrity:category_key",
+      "stage": "golden_fact",
+      "table": "FACT_SALES",
+      "passed": true,
+      "message": "FK 'category_key' -> DIM_CATEGORY: orphans=0, sentinel(-1)=0",
+      "details": {
+        "orphan_count": 0,
+        "sentinel_count": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.656950"
+    },
+    {
+      "check_name": "data_range:purchase_amount",
+      "stage": "golden_fact",
+      "table": "FACT_SALES",
+      "passed": true,
+      "message": "Range check 'purchase_amount': OK",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.657448"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_fact",
+      "table": "FACT_STORE_PERFORMANCE",
+      "passed": true,
+      "message": "File found: FACT_STORE_PERFORMANCE.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.657660"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_fact",
+      "table": "FACT_STORE_PERFORMANCE",
+      "passed": true,
+      "message": "Row count: 6,435 (min: 1)",
+      "details": {
+        "row_count": 6435,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.663438"
+    },
+    {
+      "check_name": "unique_key:performance_id",
+      "stage": "golden_fact",
+      "table": "FACT_STORE_PERFORMANCE",
+      "passed": true,
+      "message": "Duplicates in 'performance_id': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.663843"
+    },
+    {
+      "check_name": "fk_integrity:date_key",
+      "stage": "golden_fact",
+      "table": "FACT_STORE_PERFORMANCE",
+      "passed": true,
+      "message": "FK 'date_key' -> DIM_DATE_STORE: orphans=0, sentinel(-1)=0",
+      "details": {
+        "orphan_count": 0,
+        "sentinel_count": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.664556"
+    },
+    {
+      "check_name": "fk_integrity:store_key",
+      "stage": "golden_fact",
+      "table": "FACT_STORE_PERFORMANCE",
+      "passed": true,
+      "message": "FK 'store_key' -> DIM_STORE: orphans=0, sentinel(-1)=0",
+      "details": {
+        "orphan_count": 0,
+        "sentinel_count": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.665148"
+    },
+    {
+      "check_name": "fk_integrity:temp_category_key",
+      "stage": "golden_fact",
+      "table": "FACT_STORE_PERFORMANCE",
+      "passed": true,
+      "message": "FK 'temp_category_key' -> DIM_TEMPERATURE: orphans=0, sentinel(-1)=0",
+      "details": {
+        "orphan_count": 0,
+        "sentinel_count": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.665699"
+    },
+    {
+      "check_name": "data_range:weekly_sales",
+      "stage": "golden_fact",
+      "table": "FACT_STORE_PERFORMANCE",
+      "passed": true,
+      "message": "Range check 'weekly_sales': OK",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.665995"
+    },
+    {
+      "check_name": "data_range:fuel_price",
+      "stage": "golden_fact",
+      "table": "FACT_STORE_PERFORMANCE",
+      "passed": true,
+      "message": "Range check 'fuel_price': OK",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.666214"
+    },
+    {
+      "check_name": "file_exists",
+      "stage": "golden_fact",
+      "table": "FACT_ECOMMERCE_SALES",
+      "passed": true,
+      "message": "File found: FACT_ECOMMERCE_SALES.csv",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.666373"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "golden_fact",
+      "table": "FACT_ECOMMERCE_SALES",
+      "passed": true,
+      "message": "Row count: 30,170 (min: 1)",
+      "details": {
+        "row_count": 30170,
+        "min_required": 1
+      },
+      "timestamp": "2025-12-19T15:25:19.684798"
+    },
+    {
+      "check_name": "unique_key:ecommerce_sale_id",
+      "stage": "golden_fact",
+      "table": "FACT_ECOMMERCE_SALES",
+      "passed": true,
+      "message": "Duplicates in 'ecommerce_sale_id': 0",
+      "details": {
+        "duplicates": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.685877"
+    },
+    {
+      "check_name": "fk_integrity:ecommerce_product_key",
+      "stage": "golden_fact",
+      "table": "FACT_ECOMMERCE_SALES",
+      "passed": true,
+      "message": "FK 'ecommerce_product_key' -> DIM_ECOMMERCE_PRODUCT: orphans=0, sentinel(-1)=0",
+      "details": {
+        "orphan_count": 0,
+        "sentinel_count": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.694275"
+    },
+    {
+      "check_name": "fk_integrity:ecommerce_category_key",
+      "stage": "golden_fact",
+      "table": "FACT_ECOMMERCE_SALES",
+      "passed": true,
+      "message": "FK 'ecommerce_category_key' -> DIM_ECOMMERCE_CATEGORY: orphans=0, sentinel(-1)=0",
+      "details": {
+        "orphan_count": 0,
+        "sentinel_count": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.695492"
+    },
+    {
+      "check_name": "fk_integrity:brand_key",
+      "stage": "golden_fact",
+      "table": "FACT_ECOMMERCE_SALES",
+      "passed": true,
+      "message": "FK 'brand_key' -> DIM_ECOMMERCE_BRAND: orphans=0, sentinel(-1)=0",
+      "details": {
+        "orphan_count": 0,
+        "sentinel_count": 0
+      },
+      "timestamp": "2025-12-19T15:25:19.698330"
+    },
+    {
+      "check_name": "data_range:list_price",
+      "stage": "golden_fact",
+      "table": "FACT_ECOMMERCE_SALES",
+      "passed": true,
+      "message": "Range check 'list_price': OK",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.698984"
+    },
+    {
+      "check_name": "data_range:sale_price",
+      "stage": "golden_fact",
+      "table": "FACT_ECOMMERCE_SALES",
+      "passed": true,
+      "message": "Range check 'sale_price': OK",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.699379"
+    },
+    {
+      "check_name": "data_range:discount_amount",
+      "stage": "golden_fact",
+      "table": "FACT_ECOMMERCE_SALES",
+      "passed": true,
+      "message": "Range check 'discount_amount': OK",
+      "details": {},
+      "timestamp": "2025-12-19T15:25:19.699781"
+    }
+  ]
+}

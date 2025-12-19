@@ -1,0 +1,113 @@
+@startuml Star_Schema_Retail_Sales
+!define TABLE_BORDER_COLOR #0071CE
+!define FACT_COLOR #FFC220
+!define DIM_COLOR #E8F4FD
+
+title <b>Star Schema 1: Retail Sales</b>\n<i>Walmart Customer Purchases Analytics</i>
+
+skinparam class {
+    BackgroundColor<<FACT>> FACT_COLOR
+    BackgroundColor<<DIM>> DIM_COLOR
+    BorderColor TABLE_BORDER_COLOR
+    BorderThickness 2
+    FontSize 12
+    AttributeFontSize 11
+}
+
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 80
+
+' ==================== FACT TABLE ====================
+class "FACT_SALES" <<FACT>> {
+    <b>sale_id</b> : INT [PK]
+    --
+    <color:#0071CE>date_key</color> : INT [FK]
+    <color:#0071CE>customer_key</color> : INT [FK]
+    <color:#0071CE>product_key</color> : INT [FK]
+    <color:#0071CE>payment_key</color> : INT [FK]
+    <color:#0071CE>category_key</color> : INT [FK]
+    ==
+    <i>Measures</i>
+    ..
+    purchase_amount : DECIMAL
+    discount_applied : DECIMAL
+    rating : FLOAT
+    repeat_customer : INT
+}
+
+' ==================== DIMENSION TABLES ====================
+class "DIM_DATE" <<DIM>> {
+    <b>date_key</b> : INT [PK]
+    --
+    full_date : DATE
+    day : INT
+    day_name : VARCHAR
+    day_of_week : INT
+    is_weekend : INT
+    month : INT
+    month_name : VARCHAR
+    quarter : INT
+    week_of_year : INT
+    year : INT
+}
+
+class "DIM_CUSTOMER" <<DIM>> {
+    <b>customer_key</b> : INT [PK]
+    --
+    customer_id : VARCHAR
+    age : INT
+    gender : VARCHAR
+    city : VARCHAR
+    age_group : VARCHAR
+}
+
+class "DIM_PRODUCT" <<DIM>> {
+    <b>product_key</b> : INT [PK]
+    --
+    product_id : VARCHAR
+    product_name : VARCHAR
+    category_name : VARCHAR
+    rating : FLOAT
+    source : VARCHAR
+}
+
+class "DIM_PAYMENT" <<DIM>> {
+    <b>payment_key</b> : INT [PK]
+    --
+    payment_method : VARCHAR
+}
+
+class "DIM_CATEGORY" <<DIM>> {
+    <b>category_key</b> : INT [PK]
+    --
+    category_name : VARCHAR
+    root_category_name : VARCHAR
+}
+
+' ==================== RELATIONSHIPS ====================
+DIM_DATE "1" -right- "*" FACT_SALES : " date_key "
+DIM_CUSTOMER "1" -down- "*" FACT_SALES : " customer_key "
+DIM_PRODUCT "1" -up- "*" FACT_SALES : " product_key "
+DIM_PAYMENT "1" -left- "*" FACT_SALES : " payment_key "
+DIM_CATEGORY "1" -- "*" FACT_SALES : " category_key "
+
+' ==================== LEGEND ====================
+legend right
+    |= Color |= Type |
+    | <#FFC220> | Fact Table |
+    | <#E8F4FD> | Dimension Table |
+    --
+    <b>Records:</b>
+    FACT_SALES: ~50,000 rows
+    --
+    <b>Business Purpose:</b>
+    Analyze customer purchases,
+    payment methods, product
+    performance, and customer
+    demographics.
+endlegend
+
+footer \n<b>Walmart Data Analytics - Galaxy Schema</b>\nGenerated: 2025
+
+@enduml

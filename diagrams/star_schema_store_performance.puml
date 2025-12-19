@@ -1,0 +1,101 @@
+@startuml Star_Schema_Store_Performance
+!define TABLE_BORDER_COLOR #0071CE
+!define FACT_COLOR #FFC220
+!define DIM_COLOR #E8F4FD
+
+title <b>Star Schema 2: Store Performance</b>\n<i>Walmart Store Analytics with Economic Indicators</i>
+
+skinparam class {
+    BackgroundColor<<FACT>> FACT_COLOR
+    BackgroundColor<<DIM>> DIM_COLOR
+    BorderColor TABLE_BORDER_COLOR
+    BorderThickness 2
+    FontSize 12
+    AttributeFontSize 11
+}
+
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 80
+
+' ==================== FACT TABLE ====================
+class "FACT_STORE_PERFORMANCE" <<FACT>> {
+    <b>performance_id</b> : INT [PK]
+    --
+    <color:#0071CE>date_key</color> : INT [FK]
+    <color:#0071CE>store_key</color> : INT [FK]
+    <color:#0071CE>temp_category_key</color> : INT [FK]
+    ==
+    <i>Measures</i>
+    ..
+    weekly_sales : DECIMAL
+    temperature : FLOAT
+    fuel_price : DECIMAL
+    cpi : FLOAT
+    unemployment : FLOAT
+    holiday_flag : INT
+}
+
+' ==================== DIMENSION TABLES ====================
+class "DIM_DATE_STORE" <<DIM>> {
+    <b>date_key</b> : INT [PK]
+    --
+    full_date : DATE
+    day : INT
+    day_name : VARCHAR
+    day_of_week : INT
+    is_weekend : INT
+    month : INT
+    month_name : VARCHAR
+    quarter : INT
+    week_of_year : INT
+    year : INT
+}
+
+class "DIM_STORE" <<DIM>> {
+    <b>store_key</b> : INT [PK]
+    --
+    store_id : INT
+    store_name : VARCHAR
+    region : VARCHAR
+}
+
+class "DIM_TEMPERATURE" <<DIM>> {
+    <b>temp_category_key</b> : INT [PK]
+    --
+    temp_category : VARCHAR
+    temp_range_min : INT
+    temp_range_max : INT
+    description : VARCHAR
+}
+
+' ==================== RELATIONSHIPS ====================
+DIM_DATE_STORE "1" -right- "*" FACT_STORE_PERFORMANCE : " date_key "
+DIM_STORE "1" -down- "*" FACT_STORE_PERFORMANCE : " store_key "
+DIM_TEMPERATURE "1" -left- "*" FACT_STORE_PERFORMANCE : " temp_category_key "
+
+' ==================== LEGEND ====================
+legend right
+    |= Color |= Type |
+    | <#FFC220> | Fact Table |
+    | <#E8F4FD> | Dimension Table |
+    --
+    <b>Records:</b>
+    FACT_STORE_PERFORMANCE: 6,435 rows
+    --
+    <b>Business Purpose:</b>
+    Analyze store performance metrics
+    including weekly sales, impact of
+    temperature, fuel prices, CPI,
+    unemployment rates, and holidays.
+    --
+    <b>Economic Indicators:</b>
+    • CPI (Consumer Price Index)
+    • Unemployment Rate
+    • Fuel Price
+    • Temperature Impact
+endlegend
+
+footer \n<b>Walmart Data Analytics - Galaxy Schema</b>\nGenerated: 2025
+
+@enduml

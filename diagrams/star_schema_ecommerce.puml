@@ -1,0 +1,90 @@
+@startuml Star_Schema_Ecommerce
+!define TABLE_BORDER_COLOR #0071CE
+!define FACT_COLOR #FFC220
+!define DIM_COLOR #E8F4FD
+
+title <b>Star Schema 3: E-commerce Sales</b>\n<i>Walmart Online Product & Pricing Analytics</i>
+
+skinparam class {
+    BackgroundColor<<FACT>> FACT_COLOR
+    BackgroundColor<<DIM>> DIM_COLOR
+    BorderColor TABLE_BORDER_COLOR
+    BorderThickness 2
+    FontSize 12
+    AttributeFontSize 11
+}
+
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 80
+
+' ==================== FACT TABLE ====================
+class "FACT_ECOMMERCE_SALES" <<FACT>> {
+    <b>ecommerce_sale_id</b> : INT [PK]
+    --
+    <color:#0071CE>ecommerce_product_key</color> : INT [FK]
+    <color:#0071CE>ecommerce_category_key</color> : INT [FK]
+    <color:#0071CE>brand_key</color> : INT [FK]
+    ==
+    <i>Measures</i>
+    ..
+    list_price : DECIMAL
+    sale_price : DECIMAL
+    discount_amount : DECIMAL
+    discount_pct : FLOAT
+    available_flag : INT
+}
+
+' ==================== DIMENSION TABLES ====================
+class "DIM_ECOMMERCE_PRODUCT" <<DIM>> {
+    <b>ecommerce_product_key</b> : INT [PK]
+    --
+    product_id : VARCHAR
+    product_name : VARCHAR
+    brand : VARCHAR
+    root_category : VARCHAR
+    sub_category : VARCHAR
+}
+
+class "DIM_ECOMMERCE_CATEGORY" <<DIM>> {
+    <b>ecommerce_category_key</b> : INT [PK]
+    --
+    root_category : VARCHAR
+    sub_category : VARCHAR
+}
+
+class "DIM_ECOMMERCE_BRAND" <<DIM>> {
+    <b>brand_key</b> : INT [PK]
+    --
+    brand : VARCHAR
+}
+
+' ==================== RELATIONSHIPS ====================
+DIM_ECOMMERCE_PRODUCT "1" -right- "*" FACT_ECOMMERCE_SALES : " product_key "
+DIM_ECOMMERCE_CATEGORY "1" -down- "*" FACT_ECOMMERCE_SALES : " category_key "
+DIM_ECOMMERCE_BRAND "1" -left- "*" FACT_ECOMMERCE_SALES : " brand_key "
+
+' ==================== LEGEND ====================
+legend right
+    |= Color |= Type |
+    | <#FFC220> | Fact Table |
+    | <#E8F4FD> | Dimension Table |
+    --
+    <b>Records:</b>
+    FACT_ECOMMERCE_SALES: ~30,170 rows
+    --
+    <b>Business Purpose:</b>
+    Analyze e-commerce product
+    pricing, discount strategies,
+    brand performance, and
+    product availability.
+    --
+    <b>Price Analytics:</b>
+    • List Price vs Sale Price
+    • Discount Amount & Percentage
+    • Product Availability
+endlegend
+
+footer \n<b>Walmart Data Analytics - Galaxy Schema</b>\nGenerated: 2025
+
+@enduml

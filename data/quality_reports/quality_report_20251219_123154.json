@@ -1,0 +1,54 @@
+{
+  "generated_at": "2025-12-19T12:31:54.074006",
+  "summary": {
+    "total_checks": 96,
+    "passed": 96,
+    "failed": 0,
+    "pass_rate": "100.0%",
+    "by_stage": {
+      "raw": {
+        "passed": 11,
+        "failed": 0
+      },
+      "silver": {
+        "passed": 15,
+        "failed": 0
+      },
+      "golden_dim": {
+        "passed": 44,
+        "failed": 0
+      },
+      "golden_fact": {
+        "passed": 26,
+        "failed": 0
+      }
+    },
+    "failed_checks": []
+  },
+  "details": [
+    {
+      "check_name": "file_exists",
+      "stage": "raw",
+      "table": "cleaned_products_API",
+      "passed": true,
+      "message": "File found: cleaned_products_API.csv",
+      "details": {},
+      "timestamp": "2025-12-19T12:31:52.835324"
+    },
+    {
+      "check_name": "row_count",
+      "stage": "raw",
+      "table": "cleaned_products_API",
+      "passed": true,
+      "message": "Row count: 4,452 (min: 100)",
+      "details": {
+        "row_count": 4452,
+        "min_required": 100
+      },
+      "timestamp": "2025-12-19T12:31:52.890606"
+    },
+    {
+      "check_name": "null_check:us_item_id",
+      "stage": "raw",
+      "table": "cleaned_products_API",
+      "passed": 
