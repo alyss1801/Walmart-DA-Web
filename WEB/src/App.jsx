@@ -16,6 +16,7 @@ function App() {
   const [currentDashboard, setCurrentDashboard] = useState('Revenue Trend');
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   
   // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -26,12 +27,21 @@ function App() {
   // Check for saved session
   useEffect(() => {
     const savedUser = localStorage.getItem('walmart_user');
+    const savedSidebarState = localStorage.getItem('sidebar_collapsed');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
       setIsAuthenticated(true);
-      // Don't show welcome/selector for returning users
+    }
+    if (savedSidebarState) {
+      setIsSidebarCollapsed(JSON.parse(savedSidebarState));
     }
   }, []);
+
+  // Save sidebar state
+  const handleSidebarToggle = (collapsed) => {
+    setIsSidebarCollapsed(collapsed);
+    localStorage.setItem('sidebar_collapsed', JSON.stringify(collapsed));
+  };
 
   const handleLogin = (userData) => {
     setUser(userData);
@@ -91,6 +101,8 @@ function App() {
           setCurrentDashboard={setCurrentDashboard}
           user={user}
           onLogout={handleLogout}
+          isCollapsed={isSidebarCollapsed}
+          setIsCollapsed={handleSidebarToggle}
         />
         
         {/* Main Content */}
