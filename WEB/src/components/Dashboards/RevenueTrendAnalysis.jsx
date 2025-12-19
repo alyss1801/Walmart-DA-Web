@@ -6,6 +6,7 @@ import {
 } from 'recharts';
 import { Calendar, Filter, ChevronDown, TrendingUp, TrendingDown, Lightbulb, AlertTriangle, CheckCircle } from 'lucide-react';
 import { retailSalesData, storePerformanceData } from '../../data';
+import ChartAIHelper from '../Charts/ChartAIHelper';
 
 // ============================================================
 // COLOR PALETTE (from Power BI specs)
@@ -363,7 +364,13 @@ const RevenueTrendAnalysis = () => {
         </div>
 
         {/* Monthly Chart - Spans 2 rows */}
-        <div className="col-span-5 row-span-2 bg-white rounded-lg p-4 border border-black">
+        <div className="col-span-5 row-span-2 bg-white rounded-lg p-4 border border-black relative">
+          <ChartAIHelper 
+            chartTitle="Monthly Revenue & Orders"
+            chartData={filteredMonthData}
+            chartInsights="Combo chart showing monthly revenue (bars) vs orders (line). Revenue ranges ~$1M/month. March highest, February lowest."
+            position="top-right"
+          />
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-semibold text-center flex-1" style={{ fontFamily: "'Segoe UI', sans-serif" }}>
               Monthly Total Revenue and Total Orders
@@ -451,7 +458,13 @@ const RevenueTrendAnalysis = () => {
         {/* ------------------------------------------------------------ */}
         {/* ROW 3: Temperature Chart (Large) */}
         {/* ------------------------------------------------------------ */}
-        <div className="col-span-7 bg-white rounded-lg p-4 border border-black">
+        <div className="col-span-7 bg-white rounded-lg p-4 border border-black relative">
+          <ChartAIHelper 
+            chartTitle="Temperature Impact on Revenue"
+            chartData={temperatureData}
+            chartInsights="Cold weather: highest sales (35.85%), Hot: lowest (7.24%). 393% gap between Cold and Hot. Seasonality is key driver."
+            position="top-right"
+          />
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-semibold" style={{ fontFamily: "'Segoe UI', sans-serif" }}>
               Average Weekly Revenue Impacted by Temperature
@@ -569,7 +582,13 @@ const RevenueTrendAnalysis = () => {
         {/* ------------------------------------------------------------ */}
         
         {/* Revenue by Day Type (Donut) */}
-        <div className="col-span-4 bg-white rounded-lg p-4 border border-black">
+        <div className="col-span-4 bg-white rounded-lg p-4 border border-black relative">
+          <ChartAIHelper 
+            chartTitle="Holiday vs Non-Holiday Sales"
+            chartData={holidayData}
+            chartInsights="Donut chart comparing holiday vs normal day sales. Holiday periods show 6-8% higher average sales."
+            position="top-right"
+          />
           <h3 className="text-sm font-semibold text-center mb-2" style={{ fontFamily: "'Segoe UI', sans-serif" }}>
             Revenue by Day Type
           </h3>
@@ -606,7 +625,13 @@ const RevenueTrendAnalysis = () => {
         </div>
 
         {/* Daily Total Revenue (Pie) */}
-        <div className="col-span-4 bg-white rounded-lg p-4 border border-black">
+        <div className="col-span-4 bg-white rounded-lg p-4 border border-black relative">
+          <ChartAIHelper 
+            chartTitle="Weekday vs Weekend Revenue"
+            chartData={dayTypeData}
+            chartInsights="Pie chart: Weekday 71% vs Weekend 29% of revenue. Weekdays dominate due to higher transaction volume."
+            position="top-right"
+          />
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-semibold" style={{ fontFamily: "'Segoe UI', sans-serif" }}>
               Daily Total Revenue
@@ -657,7 +682,13 @@ const RevenueTrendAnalysis = () => {
         </div>
 
         {/* Total Revenue by Category */}
-        <div className="col-span-4 bg-white rounded-lg p-4 border border-black">
+        <div className="col-span-4 bg-white rounded-lg p-4 border border-black relative">
+          <ChartAIHelper 
+            chartTitle="Revenue by Category"
+            chartData={categoryData}
+            chartInsights="Bar chart: Electronics 25.5%, Home 25%, Beauty 24.8%, Clothing 24.7%. Very balanced distribution."
+            position="top-right"
+          />
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-semibold" style={{ fontFamily: "'Segoe UI', sans-serif" }}>
               Total Revenue by Category
