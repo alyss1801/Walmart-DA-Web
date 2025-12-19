@@ -528,50 +528,260 @@ export const queryProcessor = {
 // ============================================================
 
 export const generateDataContext = () => {
+  // Calculate derived metrics
+  const monthlyGrowth = retailAnalytics.getMonthlyGrowth();
+  const topMonth = retailAnalytics.getTopMonth();
+  const lowestMonth = retailAnalytics.getLowestMonth();
+  const topStores = storePerformanceJson.salesByStore.slice(0, 10);
+  const bottomStores = storePerformanceJson.salesByStore.slice(-5);
+  
+  // Calculate correlations and insights
+  const revenueRange = {
+    highest: topMonth?.revenue,
+    lowest: lowestMonth?.revenue,
+    variance: topMonth && lowestMonth ? ((topMonth.revenue - lowestMonth.revenue) / lowestMonth.revenue * 100).toFixed(1) : 0
+  };
+  
   const context = {
     timestamp: new Date().toISOString(),
     
-    // Retail Sales Summary
+    // ==========================================
+    // RETAIL SALES (2024-2025) - FULL DATA
+    // ==========================================
     retailSales: {
-      totalRevenue: formatCurrency(retailSalesJson.totalRevenue),
-      totalOrders: formatNumber(retailSalesJson.totalOrders),
-      avgOrderValue: formatCurrency(retailSalesJson.avgOrderValue),
-      avgRating: retailSalesJson.avgRating.toFixed(2),
-      uniqueCustomers: formatNumber(retailSalesJson.uniqueCustomers),
-      topMonth: retailAnalytics.getTopMonth(),
-      lowestMonth: retailAnalytics.getLowestMonth(),
+      // KPIs
+      totalRevenue: retailSalesJson.totalRevenue,
+      totalRevenueFormatted: formatCurrency(retailSalesJson.totalRevenue),
+      totalOrders: retailSalesJson.totalOrders,
+      avgOrderValue: retailSalesJson.avgOrderValue,
+      avgRating: retailSalesJson.avgRating,
+      uniqueCustomers: retailSalesJson.uniqueCustomers,
+      
+      // Monthly breakdown - FULL DATA
       revenueByMonth: retailSalesJson.revenueByMonth,
-      paymentMethods: retailSalesJson.revenueByPayment
+      monthlyAnalysis: {
+        topMonth: topMonth,
+        lowestMonth: lowestMonth,
+        revenueVariance: `${revenueRange.variance}%`,
+        monthlyGrowth: monthlyGrowth,
+        avgMonthlyRevenue: retailSalesJson.totalRevenue / 12
+      },
+      
+      // Payment methods - FULL DATA
+      paymentMethods: retailSalesJson.revenueByPayment,
+      
+      // Customer demographics - FULL DATA
+      customerByAgeGroup: retailSalesJson.customerByAgeGroup,
+      customerDemographics: retailSalesJson.customerDemographics,
+      
+      // Categories - FULL DATA
+      revenueByCategory: retailSalesJson.revenueByCategory,
+      categoryPerformance: retailSalesJson.categoryPerformance,
+      
+      // Geographic - FULL DATA
+      topCities: retailSalesJson.topCities,
+      
+      // Ratings
+      ratingDistribution: retailSalesJson.ratingDistribution
     },
     
-    // Store Performance Summary
+    // ==========================================
+    // STORE PERFORMANCE (2010-2012) - FULL DATA
+    // ==========================================
     storePerformance: {
-      totalSales: formatCurrency(storePerformanceJson.totalWeeklySales),
+      // KPIs
+      totalWeeklySales: storePerformanceJson.totalWeeklySales,
+      totalSalesFormatted: formatCurrency(storePerformanceJson.totalWeeklySales),
+      totalRecords: storePerformanceJson.totalRecords,
       totalStores: storePerformanceJson.totalStores,
-      avgWeeklySales: formatCurrency(storePerformanceJson.avgWeeklySales),
-      topStores: storePerformanceJson.salesByStore.slice(0, 10),
-      temperatureImpact: storePerformanceJson.temperatureImpact,
-      holidayImpact: storePerformanceJson.holidayImpact,
+      avgWeeklySales: storePerformanceJson.avgWeeklySales,
+      
+      // Economic indicators
       economicIndicators: {
         avgCPI: storePerformanceJson.avgCPI,
         avgUnemployment: storePerformanceJson.avgUnemployment,
-        avgFuelPrice: storePerformanceJson.avgFuelPrice
+        avgFuelPrice: storePerformanceJson.avgFuelPrice,
+        avgTemperature: storePerformanceJson.avgTemperature
+      },
+      
+      // Store rankings - FULL DATA
+      allStoresSorted: storePerformanceJson.salesByStore,
+      topStores: topStores,
+      bottomStores: bottomStores,
+      storePerformanceGap: {
+        topStore: topStores[0],
+        bottomStore: bottomStores[bottomStores.length - 1],
+        gapMultiplier: topStores[0] && bottomStores[bottomStores.length - 1] 
+          ? (topStores[0].totalSales / bottomStores[bottomStores.length - 1].totalSales).toFixed(2)
+          : 'N/A'
+      },
+      
+      // Time analysis - FULL DATA
+      salesByYear: storePerformanceJson.salesByYear,
+      salesByMonth: storePerformanceJson.salesByMonth,
+      
+      // Weather impact - FULL DATA
+      temperatureImpact: storePerformanceJson.temperatureImpact,
+      holidayImpact: storePerformanceJson.holidayImpact,
+      
+      // Economic trends - FULL DATA
+      economicTrend: storePerformanceJson.economicTrend
+    },
+    
+    // ==========================================
+    // E-COMMERCE (2019) - FULL DATA
+    // ==========================================
+    ecommerce: {
+      // KPIs
+      totalProducts: ecommerceJson.totalProducts,
+      totalBrands: ecommerceJson.totalBrands,
+      totalCategories: ecommerceJson.totalCategories,
+      avgListPrice: ecommerceJson.avgListPrice,
+      avgSalePrice: ecommerceJson.avgSalePrice,
+      avgDiscountPct: ecommerceJson.avgDiscountPct,
+      availableProducts: ecommerceJson.availableProducts,
+      
+      // Product distribution - FULL DATA
+      productsByCategory: ecommerceJson.productsByCategory,
+      topBrands: ecommerceJson.topBrands,
+      priceDistribution: ecommerceJson.priceDistribution,
+      discountDistribution: ecommerceJson.discountDistribution,
+      availabilityByCategory: ecommerceJson.availabilityByCategory
+    },
+    
+    // ==========================================
+    // PRE-COMPUTED INSIGHTS FOR COMPLEX QUERIES
+    // ==========================================
+    insights: {
+      // Cross-schema comparisons
+      revenueComparison: {
+        retailVsStore: {
+          retail2024: retailSalesJson.totalRevenue,
+          store2010_2012: storePerformanceJson.totalWeeklySales,
+          storeIsLargerBy: `${(storePerformanceJson.totalWeeklySales / retailSalesJson.totalRevenue).toFixed(0)}x`
+        }
+      },
+      
+      // Weather impact analysis
+      weatherAnalysis: {
+        coldWeatherSales: storePerformanceJson.temperatureImpact?.find(t => t.tempCategory === 'Cold'),
+        hotWeatherSales: storePerformanceJson.temperatureImpact?.find(t => t.tempCategory === 'Hot'),
+        weatherImpactConclusion: "Cold weather drives 35.85% of sales, Hot only 7.24% - 393% difference"
+      },
+      
+      // Economic correlations
+      economicCorrelations: {
+        unemploymentImpact: "NEGATIVE correlation - when unemployment decreases, sales increase",
+        cpiImpact: "STABLE CPI (171 avg) - minimal impact on purchasing behavior",
+        fuelPriceImpact: "55% increase over period but limited direct sales impact"
+      },
+      
+      // Customer insights
+      customerInsights: {
+        dominantAgeGroup: "31-45 (35.1% of customers)",
+        highestReturnRate: "18-30 age group (51% return rate)",
+        paymentPreference: "Evenly distributed ~25% each method",
+        returningCustomerValue: "Returning customers contribute ~55% of revenue"
+      },
+      
+      // Seasonal patterns
+      seasonalPatterns: {
+        peakMonths: ["March", "October", "July"],
+        lowMonths: ["February"],
+        holidayEffect: "6-8% revenue increase during holiday weeks",
+        weekdayVsWeekend: "Weekday sales slightly higher than weekend"
+      },
+      
+      // Store performance insights
+      storeInsights: {
+        topPerformers: "Store 20, 4, 14 - each >$285M",
+        performanceGap: "Top store revenue is ~3-4x bottom store",
+        regionalPattern: "All stores in USA region"
       }
     },
     
-    // E-commerce Summary
-    ecommerce: {
-      totalProducts: formatNumber(ecommerceJson.totalProducts),
-      totalBrands: ecommerceJson.totalBrands,
-      totalCategories: ecommerceJson.totalCategories,
-      avgListPrice: formatCurrency(ecommerceJson.avgListPrice),
-      avgSalePrice: formatCurrency(ecommerceJson.avgSalePrice),
-      avgDiscount: `${ecommerceJson.avgDiscountPct}%`,
-      topBrands: ecommerceJson.topBrands?.slice(0, 10)
+    // ==========================================
+    // SAMPLE COMPLEX QUERY ANSWERS
+    // ==========================================
+    sampleAnswers: {
+      "Mối quan hệ unemployment và doanh số": "Khi unemployment giảm từ 8.1% xuống 7.7%, weekly sales tăng từ $42M lên peak $55M. Tương quan ÂM mạnh.",
+      "So sánh doanh thu các nguồn": `Retail (2024-2025): ${formatCurrency(retailSalesJson.totalRevenue)} vs Store (2010-2012): ${formatCurrency(storePerformanceJson.totalWeeklySales)}`,
+      "Top store và bottom store": `Top: ${topStores[0]?.store} (${formatCurrency(topStores[0]?.totalSales)}), Bottom: ${bottomStores[bottomStores.length-1]?.store}`,
+      "Thời tiết ảnh hưởng thế nào": "Cold weather = 35.85% doanh số (cao nhất), Hot = 7.24% (thấp nhất). Chênh lệch 393%."
     }
   };
   
   return JSON.stringify(context, null, 2);
+};
+
+// ============================================================
+// ADVANCED QUERY FUNCTIONS FOR COMPLEX QUESTIONS
+// ============================================================
+
+export const advancedAnalytics = {
+  // Compare metrics across time periods
+  compareMonths: (month1, month2) => {
+    const months = retailSalesJson.revenueByMonth;
+    const m1 = months.find(m => m.month.toLowerCase() === month1.toLowerCase());
+    const m2 = months.find(m => m.month.toLowerCase() === month2.toLowerCase());
+    if (!m1 || !m2) return null;
+    return {
+      month1: m1,
+      month2: m2,
+      difference: m1.revenue - m2.revenue,
+      percentDiff: ((m1.revenue - m2.revenue) / m2.revenue * 100).toFixed(2)
+    };
+  },
+  
+  // Get stores in a revenue range
+  getStoresInRange: (minRevenue, maxRevenue) => {
+    return storePerformanceJson.salesByStore.filter(
+      s => s.totalSales >= minRevenue && s.totalSales <= maxRevenue
+    );
+  },
+  
+  // Calculate revenue by temperature
+  getRevenueByTemperature: () => {
+    const temps = storePerformanceJson.temperatureImpact;
+    const total = temps.reduce((sum, t) => sum + t.totalSales, 0);
+    return temps.map(t => ({
+      ...t,
+      percentageOfTotal: (t.totalSales / total * 100).toFixed(2)
+    }));
+  },
+  
+  // Get economic correlation data
+  getEconomicCorrelation: () => {
+    const trend = storePerformanceJson.economicTrend;
+    if (!trend) return null;
+    return {
+      cpiRange: {
+        min: Math.min(...trend.map(t => t.cpi)),
+        max: Math.max(...trend.map(t => t.cpi)),
+        avg: (trend.reduce((s, t) => s + t.cpi, 0) / trend.length).toFixed(2)
+      },
+      unemploymentRange: {
+        min: Math.min(...trend.map(t => t.unemployment)),
+        max: Math.max(...trend.map(t => t.unemployment)),
+        avg: (trend.reduce((s, t) => s + t.unemployment, 0) / trend.length).toFixed(2)
+      },
+      salesRange: {
+        min: formatCurrency(Math.min(...trend.map(t => t.weeklySales))),
+        max: formatCurrency(Math.max(...trend.map(t => t.weeklySales)))
+      }
+    };
+  },
+  
+  // Customer segment analysis
+  getCustomerSegmentInsights: () => {
+    const ageGroups = retailSalesJson.customerByAgeGroup;
+    if (!ageGroups) return null;
+    const total = ageGroups.reduce((s, a) => s + (a.customers || a.count || 0), 0);
+    return ageGroups.map(a => ({
+      ...a,
+      percentage: ((a.customers || a.count || 0) / total * 100).toFixed(1)
+    }));
+  }
 };
 
 export default {
@@ -580,5 +790,6 @@ export default {
   ecommerceAnalytics,
   crossAnalytics,
   queryProcessor,
-  generateDataContext
+  generateDataContext,
+  advancedAnalytics
 };
