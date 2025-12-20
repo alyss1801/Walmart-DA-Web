@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-12-19T15:25:19.834699",
+  "generatedAt": "2025-12-20T07:30:47.896547",
   "source": "DuckDB walmart_analytics.db",
   "totalProducts": 30170,
   "avgListPrice": 33.39,
@@ -226,19 +226,19 @@
       "color": "#FFC220"
     },
     {
-      "category": "Character Shop",
-      "productCount": 5,
-      "avgListPrice": 22.61,
-      "avgSalePrice": 22.33,
-      "avgDiscount": 5.7,
-      "color": "#78BE20"
-    },
-    {
       "category": "Office Supplies",
       "productCount": 5,
       "avgListPrice": 41.63,
       "avgSalePrice": 38.74,
       "avgDiscount": 3.0,
+      "color": "#78BE20"
+    },
+    {
+      "category": "Character Shop",
+      "productCount": 5,
+      "avgListPrice": 22.61,
+      "avgSalePrice": 22.33,
+      "avgDiscount": 5.7,
       "color": "#FF6B6B"
     },
     {
@@ -332,15 +332,15 @@
       "avgDiscount": 7.2
     },
     {
-      "brand": "Sunlite",
-      "productCount": 90,
-      "avgPrice": 16.49,
-      "avgDiscount": 0.0
-    },
-    {
       "brand": "Larissa Veronica",
       "productCount": 90,
       "avgPrice": 11.26,
+      "avgDiscount": 0.0
+    },
+    {
+      "brand": "Sunlite",
+      "productCount": 90,
+      "avgPrice": 16.49,
       "avgDiscount": 0.0
     },
     {
@@ -368,10 +368,10 @@
       "avgDiscount": 0.7
     },
     {
-      "brand": "First Team",
+      "brand": "Blistex",
       "productCount": 77,
-      "avgPrice": 95.57,
-      "avgDiscount": 0.8
+      "avgPrice": 12.63,
+      "avgDiscount": 0.0
     }
   ],
   "priceDistribution": [
@@ -597,13 +597,6 @@
       "availabilityRate": 91.7
     },
     {
-      "category": "Jewelry",
-      "available": 7,
-      "unavailable": 1,
-      "total": 8,
-      "availabilityRate": 87.5
-    },
-    {
       "category": "Arts Crafts & Sewing",
       "available": 8,
       "unavailable": 0,
@@ -611,17 +604,17 @@
       "availabilityRate": 100.0
     },
     {
+      "category": "Jewelry",
+      "available": 7,
+      "unavailable": 1,
+      "total": 8,
+      "availabilityRate": 87.5
+    },
+    {
       "category": "Walmart for Business",
       "available": 7,
       "unavailable": 0,
       "total": 7,
-      "availabilityRate": 100.0
-    },
-    {
-      "category": "Character Shop",
-      "available": 5,
-      "unavailable": 0,
-      "total": 5,
       "availabilityRate": 100.0
     },
     {
@@ -632,10 +625,10 @@
       "availabilityRate": 100.0
     },
     {
-      "category": "Cell Phones",
-      "available": 4,
+      "category": "Character Shop",
+      "available": 5,
       "unavailable": 0,
-      "total": 4,
+      "total": 5,
       "availabilityRate": 100.0
     },
     {
@@ -644,6 +637,13 @@
       "unavailable": 1,
       "total": 4,
       "availabilityRate": 75.0
+    },
+    {
+      "category": "Cell Phones",
+      "available": 4,
+      "unavailable": 0,
+      "total": 4,
+      "availabilityRate": 100.0
     },
     {
       "category": "Collectibles",
