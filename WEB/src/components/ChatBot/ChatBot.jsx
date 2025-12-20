@@ -167,6 +167,7 @@ const ChatBot = ({ isOpen, onClose, isMinimized, onMinimize }) => {
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Groq API error:', error);
+      console.error('Error details:', error.message, error.status, error.error);
       
       // Fallback: If API fails, try to respond with local data
       const localResult = queryProcessor.processQuery(userQuery);
