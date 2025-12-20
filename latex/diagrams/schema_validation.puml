@@ -1,0 +1,84 @@
+@startuml Schema_Validation_Flow
+!theme cerulean
+
+title Schema Validation - Test Flow
+caption Walmart Data Pipeline - Kiểm thử dữ liệu
+
+start
+
+partition "**1. File Existence Check**" {
+  :Check DIM_PRODUCT.csv exists;
+  :Check DIM_CUSTOMER.csv exists;
+  :Check DIM_DATE.csv exists;
+  :Check DIM_PAYMENT.csv exists;
+  :Check DIM_CATEGORY.csv exists;
+  :Check FACT_SALES.csv exists;
+  
+  if (All files exist?) then (yes)
+    :Log [OK] for each file;
+  else (no)
+    :Log [MISSING] files;
+    stop
+  endif
+}
+
+partition "**2. Primary Key Validation**" {
+  :Load all DataFrames;
+  
+  fork
+    :Check DIM_PRODUCT.product_key\n- No duplicates\n- No nulls;
+  fork again
+    :Check DIM_CUSTOMER.customer_key\n- No duplicates\n- No nulls;
+  fork again
+    :Check DIM_DATE.date_key\n- No duplicates\n- No nulls;
+  fork again
+    :Check DIM_PAYMENT.payment_key\n- No duplicates\n- No nulls;
+  fork again
+    :Check DIM_CATEGORY.category_key\n- No duplicates\n- No nulls;
+  end fork
+  
+  :Check FACT_SALES.transaction_id\n- No duplicates\n- No nulls;
+  
+  if (All PKs valid?) then (yes)
+    :Log "primary key is valid (N rows)";
+  else (no)
+    :Log "pk duplicates=X, nulls=Y";
+    stop
+  endif
+}
+
+partition "**3. Foreign Key Validation**" {
+  :Load FACT_SALES DataFrame;
+  
+  fork
+    :Check FK: date_key\n→ DIM_DATE.date_key;
+    note right: orphan_count = 0?
+  fork again
+    :Check FK: customer_key\n→ DIM_CUSTOMER.customer_key;
+  fork again
+    :Check FK: product_key\n→ DIM_PRODUCT.product_key;
+  fork again
+    :Check FK: payment_key\n→ DIM_PAYMENT.payment_key;
+  fork again
+    :Check FK: category_key\n→ DIM_CATEGORY.category_key;
+  end fork
+  
+  if (All FKs valid?) then (yes)
+    :Log "FK valid" for each;
+  else (no)
+    :Log "X orphaned keys in FK";
+    stop
+  endif
+}
+
+partition "**4. Final Result**" {
+  :All tests passed;
+  :Log "================";
+  :Log "Validation passed";
+  :Log "================";
+  :return exit_code = 0;
+}
+
+stop
+
+@enduml

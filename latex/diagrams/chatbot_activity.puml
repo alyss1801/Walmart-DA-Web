@@ -1,0 +1,82 @@
+@startuml ChatBot_Activity_Diagram
+!theme cerulean
+
+title ChatBot AI - Activity Diagram
+caption Walmart Analytics Dashboard - Cơ chế hoạt động ChatBot
+
+|User|
+start
+:Nhập câu hỏi vào chat input;
+:Click Send / Enter;
+
+|ChatBot Component|
+:Thêm user message vào messages[];
+:setIsLoading(true);
+
+|Query Processor|
+:Nhận userQuery;
+:Lowercase & parse keywords;
+
+if (Query matches pattern?) then (yes)
+  :Match với pattern\n(tháng, store, doanh thu,...);
+  
+  switch (Query Type?)
+  case ( Revenue )
+    :retailAnalytics.getTotalRevenue();
+  case ( Top Month )
+    :retailAnalytics.getTopMonth();
+  case ( Top Stores )
+    :storeAnalytics.getTopStores(5);
+  case ( Customer )
+    :retailAnalytics.getCustomerByAgeGroup();
+  case ( Temperature )
+    :storeAnalytics.getTemperatureImpact();
+  endswitch
+  
+  :Format result to structured object;
+  :Return {type, data, formatted, context};
+else (no)
+  :Return null (general query);
+endif
+
+|ChatBot Component|
+:Build enhancedPrompt;
+note right
+  enhancedPrompt = 
+  User Question + 
+  [DATA QUERY RESULT] + 
+  Formatted Data
+end note
+
+|Groq API|
+:Gọi groq.chat.completions.create();
+note right
+  Model: llama-3.3-70b-versatile
+  Messages:
+  - system: SYSTEM_PROMPT
+  - user: enhancedPrompt
+  Temperature: 0.7
+  Max tokens: 1024
+end note
+
+:LLM xử lý với context;
+:Generate response với data citations;
+:Return completion.choices[0].message;
+
+|ChatBot Component|
+:Nhận AI response;
+:Thêm assistant message vào messages[];
+:setIsLoading(false);
+
+|User|
+:Xem response trên UI;
+:scrollToBottom() tự động;
+
+if (Muốn hỏi tiếp?) then (yes)
+  :Nhập câu hỏi mới;
+  note right: Conversation history được giữ lại
+else (no)
+  stop
+endif
+
+@enduml

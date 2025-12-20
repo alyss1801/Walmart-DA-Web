@@ -1,0 +1,90 @@
+@startuml Data_Flow_Diagram
+!theme cerulean
+
+title Data Flow - From DuckDB to ChatBot Response
+caption Walmart Analytics Dashboard - Luồng dữ liệu
+
+skinparam backgroundColor #FEFEFE
+skinparam componentStyle rectangle
+
+rectangle "**DATA WAREHOUSE**\n(DuckDB)" as DW #LightBlue {
+  database "walmart_analytics.db" as DB
+  
+  package "Star Schema 1" as SS1 #LightYellow {
+    card "FACT_SALES\n50,000 rows" as F1
+    card "DIM_CUSTOMER" as D1
+    card "DIM_PRODUCT" as D2
+    card "DIM_DATE" as D3
+    card "DIM_PAYMENT" as D4
+  }
+  
+  package "Star Schema 2" as SS2 #LightGreen {
+    card "FACT_STORE_PERF\n6,435 rows" as F2
+    card "DIM_STORE" as D5
+    card "DIM_TEMPERATURE" as D6
+  }
+  
+  package "Star Schema 3" as SS3 #LightPink {
+    card "FACT_ECOMMERCE\n6,435 rows" as F3
+  }
+}
+
+rectangle "**JSON DATA LAYER**\n(Static Cache)" as JDL #AliceBlue {
+  file "retail_sales.json\n- totalRevenue: $12.77M\n- revenueByMonth[]\n- customerByAgeGroup[]" as J1
+  file "store_performance.json\n- totalSales: $6.74B\n- salesByStore[]\n- temperatureImpact[]" as J2
+  file "ecommerce.json\n- totalProducts: 6,435\n- topBrands[]\n- priceDistribution[]" as J3
+}
+
+rectangle "**ANALYTICS SERVICE**\n(dataAnalytics.js - 796 lines)" as AS #LightCyan {
+  component "retailAnalytics" as RA {
+    card "getTopMonth()" as RA1
+    card "getRevenueByMonth()" as RA2
+  }
+  component "storeAnalytics" as SA {
+    card "getTopStores(n)" as SA1
+    card "getTemperatureImpact()" as SA2
+  }
+  component "queryProcessor" as QP {
+    card "processQuery(q)" as QP1
+  }
+  component "generateDataContext()" as GDC
+}
+
+rectangle "**UI COMPONENTS**\n(React + Recharts)" as UI #Lavender {
+  component "ChatBot.jsx" as CB
+  component "ChartAIHelper.jsx" as CAH
+  component "RevenueTrendAnalysis.jsx" as RTA
+  component "CustomerSegmentation.jsx" as CS
+  component "StoreSalesPerformance.jsx" as SSP
+}
+
+cloud "**GROQ API**" as GROQ #MistyRose {
+  card "llama-3.3-70b-versatile\nTemperature: 0.7\nMax tokens: 1024" as LLM
+}
+
+' Data flow from DW to JSON
+DB --> J1 : "ETL: Extract & Transform"
+DB --> J2 : "ETL: Extract & Transform"
+DB --> J3 : "ETL: Extract & Transform"
+
+' JSON to Analytics Service
+J1 --> AS : "import JSON"
+J2 --> AS : "import JSON"
+J3 --> AS : "import JSON"
+
+' Analytics to UI
+AS --> CB : "Query Results"
+AS --> CAH : "Chart Context"
+AS --> RTA : "Chart Data"
+AS --> CS : "Chart Data"
+AS --> SSP : "Chart Data"
+
+' UI to Groq
+CB --> GROQ : "SYSTEM_PROMPT\n+ enhancedPrompt"
+CAH --> GROQ : "Chart-specific\nQuery"
+
+' Groq response
+GROQ --> CB : "AI Response\nwith data citations"
+GROQ --> CAH : "Chart Explanation"
+
+@enduml
